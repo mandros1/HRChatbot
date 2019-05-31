@@ -1,0 +1,15 @@
+Add validation on the registration for checking the password value during the registration
+    => Check that the length is => 8 and that it contains letters and at least 1 number
+    isNotShort: (value) => {
+              if (value.length < 8) {
+                throw new Error('Password should be at least 8 characters');
+              }
+            },
+            isValidFormat: (value) => {
+              let isValid = /\d/.test(value); // check if it contains at least 1 number
+              if(isValid) isValid = value.match(/[a-z]/i); // check if it contains letters
+              if (!isValid) {
+                throw new Error('Password should contain both letters and numbers');
+              }
+            }
+Add validation for reset user password
