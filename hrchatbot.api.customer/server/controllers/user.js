@@ -251,7 +251,7 @@ class Users {
             generated_salt = salt;
             password = hashedPassword;
         }else
-            password = "resetpassword";
+            password = "passwordreset";
         return User
             .create({
                 name,
