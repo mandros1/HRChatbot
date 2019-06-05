@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 exports.authenticateUser = async (userData, email, password) => {
     try {
+        // check if either email or password is empty and if so throw appropriate error
         switch (true) {
             case _.isEmpty(email):
                 throw new Error('Email cannot be empty');
@@ -16,17 +17,17 @@ exports.authenticateUser = async (userData, email, password) => {
         throw err;
     }
 
-    // if(user === null || user === undefined) {
-    //     throw new Error('There is no user by this email')
-    // }
-    // console.log(`User data is: ${user.email}, ${user.password}, ${user.salt}`);
+    /**
+     * Pull out stored hashedPassword, salt string and admin status from the user data object
+     */
     const userPw = userData.get('password');
     const userSalt = userData.get('salt');
-    // userData.set({email: 'Jozo@gjg.hr'});
-    // userData.save();
+    const isAdmin = (/true/i).test(userData.get('isAdmin'));
+
 
     // TODO: add admin and change it in the code here as well
-    const isPasswordValid = Users.passwordComparison(userPw, userSalt, false, password);
+    const isPasswordValid = Users.passwordComparison(userPw, userSalt,
+        isAdmin, password);
     if (!isPasswordValid) {
         throw new Error('Password is invalid');
     }

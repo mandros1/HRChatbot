@@ -2,7 +2,8 @@
 import model from '../models';
 import authManager from '../auth/authManager';
 
-var crypto = require('crypto');
+const mailingService = require('./../mail_service/mailing_service');
+const crypto = require('crypto');
 
 const Sequelize = require('sequelize');
 const { User } = model;
@@ -69,6 +70,38 @@ class Users {
     }
 
     /**
+     * Return true or false depending on if the user is administrator
+     * @param req request object
+     * @param res response object
+     * @return {Promise<T | never>}
+     */
+    static isAdministrator(req, res) {
+        const { auth_token } = req.params;
+        return User
+            .findOne({
+                where: {
+                    auth_token: auth_token
+                },
+                attributes: [
+                    'isAdmin'
+                ]
+            })
+            .then(user =>
+                {
+                    // if there is no user under the provided token the server sends
+                    // back 404 error - resource not found
+                    if(user != null) res.status(200).send(user);
+                    else res.status(404).send({
+                        error: 'No user under this token has been found'
+                    });
+                }
+            )
+            .catch(function (err) {
+                console.log(err.message);
+            })
+    }
+
+    /**
      * Return all users from the database
      * @param req request object
      * @param res response object
@@ -117,13 +150,6 @@ class Users {
                 })
             }
         })
-        // .catch(Sequelize.ValidationError, function (err) {
-        //     console.log(`Got an error :"${err}"`);
-        //     res.status(500).send({
-        //         success: false,
-        //         message: err.message
-        //     })
-        // })
     }
 
 
@@ -135,7 +161,7 @@ class Users {
      */
     static updateUser(req, res) {
         const { userId } = req.params;
-        const { name, email, password, salt, auth_token, auth_token_valid_to } = req.body;
+        const { name, email, password, salt, isAdmin, auth_token, auth_token_valid_to } = req.body;
         return User
             .findByPk(userId)
             .then(user => {
@@ -144,6 +170,7 @@ class Users {
                     email: email || user.email,
                     password: password || user.password,
                     salt: salt || user.salt,
+                    isAdmin: isAdmin || user.isAdmin,
                     auth_token: auth_token || user.auth_token,
                     auth_token_valid_to: auth_token_valid_to || user.auth_token_valid_to
                 })
@@ -155,6 +182,7 @@ class Users {
                             email: updatedUser.email,
                             password: updatedUser.password,
                             salt: updatedUser.salt,
+                            isAdmin: updatedUser.isAdmin,
                             auth_token: updatedUser.auth_token,
                             auth_token_valid_to: updatedUser.auth_token_valid_to
                         }
@@ -171,7 +199,7 @@ class Users {
      * @param res response object
      * @return {Promise<T | never>}
      */
-    static removeUser(req, res) {
+    static deleteUser(req, res) {
         const { userId } = req.params;
         return User
             .destroy({
@@ -200,7 +228,8 @@ class Users {
                 },
                 attributes: [
                     'name',
-                    'email'
+                    'email',
+                    'isAdmin'
                 ]
             })
             .then(user =>
@@ -226,11 +255,31 @@ class Users {
      */
     static login(req, res) {
         const { email, password } = req.body;
-        User.findOne({ where: {email: email} }).then(userData => {
+        User.findOne({
+            where: {
+                email: email
+            },
+            attributes: [
+                'name',
+                'email',
+                'isAdmin'
+            ] }).then(userData => {
             if(userData !== null) {
+                // forward userData that holds all the data for the returned user
+                // provide auth manager with email and password to be compared
                 authManager.authenticateUser(userData, email, password);
                 res.status(200).send(userData);
             }
+        })
+        .catch(Sequelize.ValidationError, function (err) {
+            console.log(`Got an errror :"${err}"`);
+            res.status(500).send({
+                success: false,
+                message: err.message
+            })
+        })
+        .catch(function (err) {
+            console.log(err.message);
         })
     }
 
@@ -243,30 +292,52 @@ class Users {
      * @return {Promise<T | never | Error>}
      */
     static signUp(req, res) {
-        const { name, username, email, auth_token, auth_token_valid_to } = req.body;
-        let { password } = req.body;
-        let generated_salt = generateRandomStringSequence(16);
+        // pull all the data from the body provided by the query
+        const { name, email, isAdmin, auth_token, auth_token_valid_to } = req.body;
+        let { password } = req.body; // password can be omitted
+        let generated_salt;
+        let hashed_password;
+        /**
+         * if the password is not provided by the admin during the registration
+         * TODO: this may be changed in the future development to automatically generate pw for user
+         *  so the first if may be removed if that is to be done like that
+         */
         if (password !== null && password !== undefined && password.length !== 0){
             const { salt, hashedPassword } = saltHashPassword(password);
             generated_salt = salt;
-            password = hashedPassword;
-        }else
-            password = "resetpassword";
+            hashed_password = hashedPassword;
+        }else {
+            // if no password is provided then api generates on for him
+            password = generateRandomStringSequence(10);
+            const { salt, hashedPassword } = saltHashPassword(password);
+            generated_salt = salt;
+            hashed_password = hashedPassword;
+        }
         return User
             .create({
-                name,
-                username,
-                email,
-                password,
+                name: name,
+                email: email,
+                password: hashed_password,
                 salt: generated_salt,
-                auth_token,
-                auth_token_valid_to
+                isAdmin: isAdmin,
+                auth_token: auth_token,
+                auth_token_valid_to: auth_token_valid_to
             })
-            .then(userData => res.status(201).send({
+            .then(userData =>
+                res.status(201).send({
                 success: true,
                 message: 'User successfully created',
                 userData
-            }))
+                }),
+                mailingService.send(
+                    email,
+                    "Successful Registration",
+                    '',
+                    `<h2>Welcome to our HRChatbot service <b>${name}</b></h2><br>` +
+                    `You have been successfully registered with this email address for our chatbot service 
+                    and your password is <b>${password}</b>.<br>It an be changed once You have
+                    logged into the application.`)
+            )
             .catch(Sequelize.ValidationError, function (err) {
                 console.log(`Got an errror :"${err}"`);
                 res.status(500).send({

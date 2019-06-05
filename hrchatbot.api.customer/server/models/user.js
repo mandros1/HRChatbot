@@ -42,6 +42,17 @@ export default (sequelize, DataTypes) => {
       },
     },
 
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    validate: {
+      notNull: {
+        args: true,
+        msg: "Boolean value for admin status is needed"
+      }
+    }
+  },
+
     password: {
       type: DataTypes.STRING,
       allowNull: false,
