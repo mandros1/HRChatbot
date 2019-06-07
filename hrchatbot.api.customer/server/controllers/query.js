@@ -3,6 +3,8 @@ import model from '../models';
 const { Inquiry } = model;
 
 class Inquiries {
+
+
     /**
      * Creates a query object in the database
      * @param req request object that holds all the values for the columns
@@ -26,15 +28,27 @@ class Inquiries {
     }
 
     /**
-     * Returns all the queries in the database
-     * @param req
+     *
+     * @param req request object that
      * @param res
      * @return {Promise<T | never>}
      */
     static getAllQueries(req, res) {
         return Inquiry
             .findAll()
-            .then(queries => res.status(200).send(queries));
+            .then(queries => {
+                // if there are no queries in the database error is returned along with
+                // 404 - resource not found code
+                if(queries != null && queries.length > 0) res.status(200).send({
+                    success: true,
+                    message: 'Queries fetched',
+                    queries
+                });
+                else res.status(404).send({
+                    success: false,
+                    message: 'There are no queries in the database'
+                });
+            });
     }
 
     /**

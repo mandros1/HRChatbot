@@ -8,7 +8,7 @@ const crypto = require('crypto');
 const Sequelize = require('sequelize');
 const { User } = model;
 
-// used to generate salt for the hashing algorithm
+// variable that holds generated salt for the hashing algorithm
 let generateRandomStringSequence = function(length){
     return Users.generateHashSalt(length);
 };
@@ -40,6 +40,49 @@ function saltHashPassword(password) {
     return hashing(password, salt);
 }
 
+/**
+ * Function that validates user password when trying to reset password
+ * It requires at least 8 characters of length, at least 1 letter and at least 2 numbers
+ * No special characters are allowed
+ * @param password string value of password
+ * @return {*} object that holds the validity and message of the validation function
+ */
+function validatePassword(password) {
+    let atLeastTwoDigits = new RegExp("[0-9].*[0-9]");
+    let atLeastOneCharacter = new RegExp("[a-zA-Z]");
+    let onlyEightCharactersAndDigits = new RegExp("^[0-9a-zA-Z]{8,}$"); // no special chars
+
+    if (atLeastTwoDigits.test(password) &&
+        atLeastOneCharacter.test(password) &&
+        onlyEightCharactersAndDigits.test(password)) {
+        return {
+            valid: true,
+            message: 'Password is valid'
+        };
+    } else {
+        return {
+            valid: false,
+            message: 'Password must be 8 digits long and it must include at least 2 numbers ' +
+                'and cannot contain any special characters'
+        };
+    }
+}
+
+/**
+ * Generates integer from the current date, ex. 23.09.1994. at 17:42 -> 199409231742
+ * @return {number} integer representation of the date
+ */
+function getCurrentDateInteger() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const dateDay = ("0" + date.getDate()).slice(-2);
+    const hours = ("0" + date.getHours()).slice(-2);
+    const minutes = ("0" + date.getMinutes()).slice(-2);
+    return parseInt(year+month+dateDay+hours+minutes);
+}
+
+
 class Users {
 
     /**
@@ -57,16 +100,12 @@ class Users {
      * Function used for comparing the passwords that are provided through parameters
      * @param storedHashedPassword the password stored in the database
      * @param storedSalt the salt stored in the database
-     * @param isUserAdmin boolean value of if the user is admin or not
      * @param userPassword string password passed by the user from the application
      * @return {boolean} true if passwords are the same and false if they don't match
      */
-    static passwordComparison(storedHashedPassword, storedSalt, isUserAdmin, userPassword) {
+    static passwordComparison(storedHashedPassword, storedSalt, userPassword) {
         const { hashedPassword } = hashing(userPassword, storedSalt);
-        if(storedHashedPassword === hashedPassword){
-            // user is authenticated
-            return true;
-        }
+        return storedHashedPassword === hashedPassword;
     }
 
     /**
@@ -76,29 +115,49 @@ class Users {
      * @return {Promise<T | never>}
      */
     static isAdministrator(req, res) {
-        const { auth_token } = req.params;
+        const { auth_token } = req.body;
         return User
             .findOne({
                 where: {
                     auth_token: auth_token
                 },
                 attributes: [
-                    'isAdmin'
+                    'isAdmin',
+                    'auth_token_valid_to'
                 ]
             })
-            .then(user =>
-                {
+            .then(user => {
                     // if there is no user under the provided token the server sends
                     // back 404 error - resource not found
-                    if(user != null) res.status(200).send(user);
-                    else res.status(404).send({
-                        error: 'No user under this token has been found'
-                    });
-                }
-            )
+                    if(user !== undefined && user != null) {
+                        // Checking if the token is still valid
+                        if (parseInt(user.get('auth_token_valid_to')) > getCurrentDateInteger()) {
+                            res.status(200).send({
+                                success: true,
+                                message: 'User admin status returned',
+                                data: {
+                                    isAdmin: user.get('isAdmin')
+                                }
+                            });
+                        } else {
+                            res.status(500).send({
+                                success: false,
+                                message: 'Token date is not valid'
+                            });
+                        } // invalid token else
+                    } else {
+                        res.status(404).send({
+                            success: false,
+                            message: 'No user has been found'
+                        });
+                    } // user not found by that token else
+                }) // ending then
             .catch(function (err) {
-                console.log(err.message);
-            })
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                });
+            }) // ending catch
     }
 
     /**
@@ -121,37 +180,78 @@ class Users {
                     });
                     else res.status(404).send({
                         success: false,
-                        error: 'There are no users in the database'
+                        message: 'There are no users in the database'
                     });
                 }
             );
     }
-    // No validation needed
 
-    //TODO: figure out how to allow initial setting of the password when user still doesn't
-    // have auth_token generated?
+    /**
+     * Reset password functionality that takes in the value for new password and auth_token
+     * stored on the user side that is used for the authentication
+     * @param req request object holding new password and authentication token
+     * @param res response object that is used to return data to the user
+     */
     static resetUserPassword(req, res) {
         // auth_token is sent over from the application in the request body and new password is provided
-        const { auth_token, new_password } = req.body;
-        User.findOne({
-            where: {auth_token: auth_token},
-            attributes: ['name', 'email']
-        }).then(userData => {
-            if(userData !== null) {
-                const salt = userData.get('salt');
-                const { hashedPassword } = hashing(new_password, salt);
-                userData.set({
-                    password: hashedPassword
-                });
-                userData.save();
-                res.status(200).send({
-                    message: 'Password has been reset',
-                    data: userData
-                })
-            }
-        })
-    }
+        const { auth_token, password } = req.body;
+        const { valid, message } = validatePassword(password);
+        // find by auth_token as it is unique
+        if(valid === true){
+            User.findOne({
+                where: {
+                    auth_token: auth_token
+                },
+                attributes: [
+                    'id',
+                    'name',
+                    'email',
+                    'salt',
+                    'auth_token_valid_to'
+                ]
+            })
+            .then(userData => {
+                // checking if there is a user by that authentication token
+                if(userData !== undefined && userData !== null) {
+                    // get stored salt and the date to which the token is valid
+                    const salt = userData.get('salt');
+                    const tokenDate = userData.get('auth_token_valid_to');
+                    // checks if the token is still valid
+                    if (tokenDate > getCurrentDateInteger()) {
+                        const { hashedPassword } = hashing(password, salt);
 
+                        // changing password
+                        userData.set({
+                            password: hashedPassword
+                        });
+                        // storing the updated object to the DB
+                        userData.save();
+
+                        res.status(200).send({
+                            success: true,
+                            message: 'Password has been reset',
+                            data: userData
+                        })
+                    } else {
+                        res.status(500).send({
+                            success: false,
+                            message: "Token has expired"
+                        })
+                    }
+                } else {
+                    res.status(500).send({
+                        success: false,
+                        message: "User under the token doesn't exist"
+                    })
+                }
+            })
+        } else {
+            res.status(500).send({
+                success: valid,
+                message: message
+            })
+        }
+    }
 
     /**
      * Updating user with the sent data
@@ -160,37 +260,50 @@ class Users {
      * @return {Promise<T | never>}
      */
     static updateUser(req, res) {
+        // TODO: create a similar function that will do this over the user email?
         const { userId } = req.params;
-        const { name, email, password, salt, isAdmin, auth_token, auth_token_valid_to } = req.body;
+         // TODO: keep password and salt so that we can allow the admin to reset user password
+        const { name, email, password, salt, isAdmin } = req.body;
         return User
             .findByPk(userId)
             .then(user => {
-                user.update({
-                    name: name || user.name,
-                    email: email || user.email,
-                    password: password || user.password,
-                    salt: salt || user.salt,
-                    isAdmin: isAdmin || user.isAdmin,
-                    auth_token: auth_token || user.auth_token,
-                    auth_token_valid_to: auth_token_valid_to || user.auth_token_valid_to
-                })
-                .then(updatedUser => {
-                    res.status.code(200).send({
-                        message: 'User updated successfully',
-                        data: {
-                            name: updatedUser.name,
-                            email: updatedUser.email,
-                            password: updatedUser.password,
-                            salt: updatedUser.salt,
-                            isAdmin: updatedUser.isAdmin,
-                            auth_token: updatedUser.auth_token,
-                            auth_token_valid_to: updatedUser.auth_token_valid_to
-                        }
+                if (user !== undefined && user !== null) {
+                    user.update({
+                        name: name || user.name,
+                        email: email || user.email,
+                        //password: password || user.password,
+                        isAdmin: isAdmin || user.isAdmin
                     })
-                })
-                .catch(error => res.status(400).send(error))
+                    .then(updatedUser => {
+                        res.status(200).send({
+                            success: true,
+                            message: 'User updated successfully',
+                            data: {
+                                name: updatedUser.name,
+                                email: updatedUser.email,
+                                //password: updatedUser.password,
+                                isAdmin: updatedUser.isAdmin
+                            }
+                        })
+                    })
+                    .catch(error => res.status(400).send({
+                        success: false,
+                        message: error.message
+                    }))
+                } else {
+                    res.status(404).send({
+                        success: false,
+                        message: `There is no user under the given userId`
+                    })
+                }
             })
-            .catch(error => res.status(400).send(error))
+            .catch(error =>{
+                res.status(400).send({
+                    success: false,
+                    message: error.message
+                });
+            }
+            )
     }
 
     /**
@@ -207,16 +320,31 @@ class Users {
                     id: userId
                 }
             })
-            .then( user => res.status(202).send({
-                message: `User ${user.username} has been removed.`,
-                user
-            }))
+            .then( user => {
+                    if (user !== undefined && user !== null) {
+                        res.status(202).send({
+                        success: true,
+                        message: `User ${user.username} has been removed.`,
+                        user })
+                    } else {
+                        res.status(404).send({
+                            success: false,
+                            message: `There is no user under the given userId`
+                        })
+                    }
+            })
+            .catch(function (err) {
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                });
+            })
     }
 
     /**
-     * Return a user that is found under the given ID
-     * @param req request object
-     * @param res response object
+     * Fetch name, email address and admin status of the user that is found under the provided ID
+     * @param req request object that holds the user ID primary key parameter sent from the client via the URL
+     * @param res response object that holds name, email and admin status data about the user
      * @return {Promise<T | never>}
      */
     static getUser(req, res) {
@@ -232,87 +360,98 @@ class Users {
                     'isAdmin'
                 ]
             })
-            .then(user =>
-                {
-                    // if there is no user under the provided ID the server sends
-                    // back 404 error - resource not found
-                    if(user != null) res.status(200).send(user);
-                    else res.status(404).send({
-                        error: 'No user under this ID has been found'
-                    });
-                }
-                )
+            .then(user => {
+                if(user !== undefined && user != null) res.status(200).send({
+                    success: true,
+                    message: 'User found',
+                    data: user
+                });
+                // if there is no user under the provided ID the server sends
+                // back 404 error - resource not found
+                else res.status(404).send({
+                    success: false,
+                    message: 'No user under this ID has been found'
+                });
+            })
             .catch(function (err) {
-                console.log(err.message);
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                });
             })
     }
 
 
     /**
      * Login function which takes in the email and password and authenticates the user
-     * @param req
-     * @param res
+     * @param req request object holding email and password that are passed to the server from the client
+     * @param res response object that holds all the data for the found user
      */
     static login(req, res) {
         const { email, password } = req.body;
         User.findOne({
             where: {
                 email: email
-            },
-            attributes: [
-                'name',
-                'email',
-                'isAdmin'
-            ] }).then(userData => {
-            if(userData !== null) {
-                // forward userData that holds all the data for the returned user
-                // provide auth manager with email and password to be compared
-                authManager.authenticateUser(userData, email, password);
-                res.status(200).send(userData);
-            }
-        })
-        .catch(Sequelize.ValidationError, function (err) {
-            console.log(`Got an errror :"${err}"`);
-            res.status(500).send({
-                success: false,
-                message: err.message
+            }})
+            .then( async userData => {
+                if (userData !== null && userData !== undefined) {
+                    // forward userData that holds all the data for the returned user (salt and hashed pw are gathered from it)
+                    // provide auth manager with email and password to be compared
+                    const {success, message} = await authManager.authenticateUser(userData, email, password);
+                    if ((/true/i).test(success)) {
+                        // returning only token and admin status
+                        let data = {
+                            auth_token: userData.get('auth_token'),
+                            isAdmin: userData.get('isAdmin')
+                        };
+                        res.status(200).send({
+                            success: true,
+                            message: 'User has been successfully logged in',
+                            data: data
+                        });
+                    } else {
+                        throw new Error(message);
+                    }
+                } else {
+                    // if there is no user by the defined email we throw an error in order to return error message
+                    throw new Sequelize.ValidationError('User credentials are not correct');
+                }
             })
-        })
-        .catch(function (err) {
-            console.log(err.message);
-        })
+            .catch(Sequelize.ValidationError, function (err) {
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                })
+            })
+            .catch(function (err) {
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                })
+            })
     }
 
     /**
      * Registers a user by email and username, it doesn't create token, for that user needs to log in in order
      * to generate them.
-     * Can be used with a provided password and without the password
-     * @param req request object that holds all the needed data
-     * @param res response object
+     * @param req request object that has email, name and admin status
+     * @param res response object used to send the data back to the user site
      * @return {Promise<T | never | Error>}
      */
     static signUp(req, res) {
         // pull all the data from the body provided by the query
         const { name, email, isAdmin, auth_token, auth_token_valid_to } = req.body;
-        let { password } = req.body; // password can be omitted
         let generated_salt;
         let hashed_password;
-        /**
-         * if the password is not provided by the admin during the registration
-         * TODO: this may be changed in the future development to automatically generate pw for user
-         *  so the first if may be removed if that is to be done like that
-         */
-        if (password !== null && password !== undefined && password.length !== 0){
-            const { salt, hashedPassword } = saltHashPassword(password);
-            generated_salt = salt;
-            hashed_password = hashedPassword;
-        }else {
-            // if no password is provided then api generates on for him
-            password = generateRandomStringSequence(10);
-            const { salt, hashedPassword } = saltHashPassword(password);
-            generated_salt = salt;
-            hashed_password = hashedPassword;
-        }
+
+        // TODO: we can add code here if we want to allow admins to create account with them setting the password initially
+
+        let password = generateRandomStringSequence(10);
+        const { salt, hashedPassword } = saltHashPassword(password);
+        generated_salt = salt;
+        hashed_password = hashedPassword;
+
+
         return User
             .create({
                 name: name,
@@ -335,11 +474,11 @@ class Users {
                     '',
                     `<h2>Welcome to our HRChatbot service <b>${name}</b></h2><br>` +
                     `You have been successfully registered with this email address for our chatbot service 
-                    and your password is <b>${password}</b>.<br>It an be changed once You have
+                    and your password is <b>${password}</b>, it an be changed once You have
                     logged into the application.`)
             )
             .catch(Sequelize.ValidationError, function (err) {
-                console.log(`Got an errror :"${err}"`);
+                console.log(`Got an error :"${err}"`);
                 res.status(500).send({
                     success: false,
                     message: err.message

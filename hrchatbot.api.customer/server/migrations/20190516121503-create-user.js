@@ -30,19 +30,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       auth_token: {
+        unique: true,
         type: Sequelize.STRING
       },
       auth_token_valid_to: {
-        type: Sequelize.DATE
-      },
-      // createdAt: {
-      //   allowNull: false,
-      //   type: Sequelize.DATE
-      // },
-      // updatedAt: {
-      //   allowNull: false,
-      //   type: Sequelize.DATE
-      // }
+        type: Sequelize.BIGINT
+      }
     });
   },
   down: queryInterface /* , Sequelize */ => queryInterface.dropTable('Users')

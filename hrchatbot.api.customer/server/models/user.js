@@ -81,6 +81,10 @@ export default (sequelize, DataTypes) => {
     auth_token: {
       type: DataTypes.STRING,
       defaultValue: null,
+      unique: {
+        args: true,
+        msg: 'Token already exists'
+      },
       allowNull: {
         args: false,
         msg: 'Token cannot be null'
@@ -88,17 +92,11 @@ export default (sequelize, DataTypes) => {
     },
 
     auth_token_valid_to: {
-      type: DataTypes.DATE,
+      type: DataTypes.INTEGER,
       defaultValue: null,
       allowNull: {
         args: false,
         msg: 'Token validity date cannot be null'
-      },
-      validate: {
-        isAfter: {
-            args: Date.now(),
-            msg: 'Invalid token date, must be after today'
-        }
       }
     }
   }, {

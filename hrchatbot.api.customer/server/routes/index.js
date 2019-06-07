@@ -10,20 +10,14 @@ export default (app) => {
     }));
 
     app.post(`${baseUrl}/register`, Users.signUp); // user register
-    app.post(`${baseUrl}/login`, Users.login); // user login
-    app.post(`${baseUrl}/resetpassword`, Users.resetUserPassword); // resets the password, needs token and password in body
-    app.delete(`${baseUrl}/users/:userId`, Users.deleteUser); // delete user by ID
     app.put(`${baseUrl}/users/:userId`, Users.updateUser); // update user
+    app.put(`${baseUrl}/login`, Users.login); // user login
+    app.put(`${baseUrl}/resetpassword`, Users.resetUserPassword); // resets the password, needs token and password in body
+    app.delete(`${baseUrl}/users/:userId`, Users.deleteUser); // delete user by ID
     app.get(`${baseUrl}/users`, Users.getAllUsers); // get all users
     app.get(`${baseUrl}/users/:userId`, Users.getUser); // get user by ID
+    app.get(`${baseUrl}/isAdmin`, Users.isAdministrator); // get user admin status
 
-
-    // app.post(`${baseUrl}/:userId/books`, Books.create); // creating a book object
-    // app.delete(`${baseUrl}/:bookId/books`, Books.removeBook); // remove book object
-    // app.put(`${baseUrl}/books/:bookId`, Books.updateBook); // update a book by specified bookId
-    // app.get(`${baseUrl}/books`, Books.allBooks); // return all the books in the database
-    // app.get(`${baseUrl}/:userId/books`, Books.getBook); // return all the books that belong to the user with userId
-    // app.get(`${baseUrl}/books/:bookId`, Books.getBookById); // return the book by specified bookId
 
     app.post(`${baseUrl}/:userId/queries`, Queries.create); // creating a book object
     app.delete(`${baseUrl}/:queryId/queries`, Queries.removeQuery); // remove book object
