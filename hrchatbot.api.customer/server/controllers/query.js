@@ -1,9 +1,16 @@
 import model from '../models';
+import api from './../assistant_service/api';
 
 const { Inquiry } = model;
 
 class Inquiries {
 
+
+    static askedQuestion(req, res){
+        const { question } = req.body;
+
+
+    }
 
     /**
      * Creates a query object in the database

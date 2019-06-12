@@ -2,9 +2,16 @@ export default (sequelize, DataTypes) => {
   const Inquiry = sequelize.define('Inquiry', {
     question: {
       type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Please provide user question'
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "User's question cannot be null"
+        },
+        notEmpty: {
+          args: true,
+          msg: "User's question cannot be empty"
+        }
       }
     },
 
@@ -18,6 +25,7 @@ export default (sequelize, DataTypes) => {
 
     userId: {
       type: DataTypes.INTEGER,
+      unique: true,
       allowNull: {
         args: false,
         msg: 'Please provide id of the user that asked the question'
