@@ -27,6 +27,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^5.8.6"
+    "sequelize": "^5.8.6",
+    "xmlhttprequest": "^1.8.0"
   }
 }

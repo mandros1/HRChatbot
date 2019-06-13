@@ -1,3 +1,4 @@
+// NEWER ONE
 'use strict';
 import http from 'http';
 import routes from './server/routes';
@@ -9,13 +10,16 @@ const server = http.createServer(app);
 
 
 const hostname = '127.0.0.1';
-const port = process.env.PORT || 3000;
+const port = process.env.SERVER_PORT || 3000;
 
 routes(app);
 
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+
+
 
 // /////////////////////////////////////////////////
 // import http from 'http'

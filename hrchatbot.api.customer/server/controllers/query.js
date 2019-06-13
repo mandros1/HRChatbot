@@ -1,15 +1,47 @@
 import model from '../models';
-import api from './../assistant_service/api';
-
 const { Inquiry } = model;
+
+const Api = require('./api');
+
+let latestResponse = null;
+
 
 class Inquiries {
 
+    static getSessionId(req, res){
+        Api.getSessionId(function() {
+            Api.sendRequest('', null);
+        });
+    }
 
     static askedQuestion(req, res){
         const { question } = req.body;
+        if (question !== undefined && question !== ''){
 
+            // this is the previous context of the conversation
+            latestResponse = Api.getResponsePayload();
 
+            // after this has been executed Api has set a response and a request payload
+            Api.sendRequest(question, latestResponse.context);
+
+            // 1. staviti question kao request payload na API
+            // 2. izvuci iz API-ja response payload
+
+            // 3. sada kada imamo i question i answer
+            // payload trebamo stvoriti query objekt
+
+        } else {
+            // getSessionId needs to be called only once in order to declare the variable in the Api
+            Api.getRequestPayload();
+            // Api.getSessionId(function() {
+            //     Api.sendRequest('', null);
+            // });
+            latestResponse = Api.getResponsePayload();
+        }
+        return {
+            question: question,
+            responsePayload: latestResponse
+        }
     }
 
     /**

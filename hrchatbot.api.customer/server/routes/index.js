@@ -26,6 +26,8 @@ export default (app) => {
     // User Question
         app.post(`${baseUrl}/question`, Queries.askedQuestion);
 
+        app.get(`${baseUrl}/session`, Queries.getSessionId)
+
     // QUERIES routes
         // INSERT
         app.post(`${baseUrl}/:userId/queries`, Queries.create); // creating a query object
