@@ -440,14 +440,11 @@ class Users {
      */
     static signUp(req, res) {
         // pull all the data from the body provided by the query
-        console.log(req.body);
         const { name, email, isAdmin, auth_token, auth_token_valid_to } = req.body;
-        console.log(`Data is ${name}, ${email} and ${isAdmin}`);
         let generated_salt;
         let hashed_password;
 
         // TODO: we can add code here if we want to allow admins to create account with them setting the password initially
-
         let password = generateRandomStringSequence(10);
         const { salt, hashedPassword } = saltHashPassword(password);
         generated_salt = salt;

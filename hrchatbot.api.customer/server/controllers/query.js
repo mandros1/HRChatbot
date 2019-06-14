@@ -4,24 +4,44 @@ const { Inquiry } = model;
 const Api = require('./api');
 
 let latestResponse = null;
+let sessionId = null;
 
 
 class Inquiries {
 
 
     /**
-     * This is used to intialize the API since it sets the session ID and sends a empty/initial request to WA
-     * @param req
+     * This is used to initialize the API since it sets the session ID and sends a empty/initial request to WA
+     * @param req request object, which is in this case empty
      * @param res
      * @return {{sessionId: void}}
      */
     static getSessionId(req, res){
-        let sessionId = Api.getSessionId(function() {
-            Api.sendRequest('', null);
+        Api.getSessionId(async function () {
+            console.log('Before send request');
+            await Api.sendRequest('', null, () => {});
+            console.log('After send request');
+
+            sessionId = Api.sessionID();
+            if (Api.sessionStatusCode() === 200) {
+
+                let data = JSON.stringify( await Api.getResponsePayload());
+                console.log(`Data in query is ${data}`);
+
+                res.status(200).send({
+                    success: true,
+                    message: 'Session started',
+                    data: {
+                        sessionId: sessionId
+                    }
+                });
+            } else {
+                res.status(Api.sessionStatusCode()).send({
+                    success: false,
+                    message: 'Something went wrong'
+                });
+            }
         });
-        return {
-            sessionId: sessionId
-        }
     }
 
     static askedQuestion(req, res){
