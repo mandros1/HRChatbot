@@ -35,6 +35,8 @@ var app = express();
 
 // Bootstrap application settings
 app.use(express.static('./public')); // load UI from public folder
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Create the service wrapper

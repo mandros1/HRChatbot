@@ -8,10 +8,20 @@ let latestResponse = null;
 
 class Inquiries {
 
+
+    /**
+     * This is used to intialize the API since it sets the session ID and sends a empty/initial request to WA
+     * @param req
+     * @param res
+     * @return {{sessionId: void}}
+     */
     static getSessionId(req, res){
-        Api.getSessionId(function() {
+        let sessionId = Api.getSessionId(function() {
             Api.sendRequest('', null);
         });
+        return {
+            sessionId: sessionId
+        }
     }
 
     static askedQuestion(req, res){

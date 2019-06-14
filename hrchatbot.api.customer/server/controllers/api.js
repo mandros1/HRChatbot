@@ -47,36 +47,36 @@ var Api = (function() {
      * @param callback function
      */
     function getSessionId(callback) {
-        console.log('getSessionId called');
 
-        var options = {
+        let options = {
             host: 'localhost',
             port: 3000,
-            path: '/api/session',
+            path: sessionEndpoint,
             method: 'GET',
             headers: {
+                'Content-Type': 'application/json',
                 accept: 'application/json'
             }
         };
 
-        console.log("Start");
-        var x = httpObject.request(options,function(res){
-            console.log("Connected");
-            let data = '';
+        let x = httpObject.request(options,(res) => {
 
-            res.on('data',(chunk => {
-                let object = JSON.parse(chunk);
-                // data += object.session_id;
+            console.log(`Status code ${res.statusCode}`);
+
+            res.on('data', (d) => {
+                let object = JSON.parse(d);
                 sessionId = object.session_id;
-            }));
-
-            console.log(`Data is: ${data}`);
+                console.log(sessionId);
+            });
 
             res.on('end', () => {
-                console.log(`End data is: ${JSON.parse(data).explanation}`);
+                callback();
+            });
+
+            res.on('error', (error) => {
+                console.log(`Error has occurred: ${error}`);
             });
         });
-
         x.end();
 
         // NOT WORKING WITHOUT SSL CERTIFICATE
@@ -95,18 +95,18 @@ var Api = (function() {
         //     console.log("Error: " + err.message);
         // });
 
-        var http = new XMLHttpRequest();
-        http.open('GET', sessionEndpoint, true);
-        http.setRequestHeader('Content-type', 'application/json');
-        http.onreadystatechange = function () {
-            if (http.readyState === XMLHttpRequest.DONE) {
-                var res = JSON.parse(http.responseText);
-                console.log(res.session_id);
-                sessionId = res.session_id;
-                callback();
-            }
-        };
-        http.send();
+        // var http = new XMLHttpRequest();
+        // http.open('GET', sessionEndpoint, true);
+        // http.setRequestHeader('Content-type', 'application/json');
+        // http.onreadystatechange = function () {
+        //     if (http.readyState === XMLHttpRequest.DONE) {
+        //         var res = JSON.parse(http.responseText);
+        //         console.log(res.session_id);
+        //         sessionId = res.session_id;
+        //         callback();
+        //     }
+        // };
+        // http.send();
     }
 
     /**
@@ -116,11 +116,13 @@ var Api = (function() {
      * @param context is the WA context previous to the asked question/provided response by the user
      */
     function sendRequest(text, context) {
-        console.log(`sendRequest: ${text} and with ${context}`);
+        console.log(`sendRequest text: ${text} and context: ${context}`);
         // Build request payload
-        var payloadToWatson = {
+        let payloadToWatson = {
             session_id: sessionId
         };
+        console.log(`Inside send request the session is ${sessionId}`);
+
 
         payloadToWatson.input = {
             message_type: 'text',
@@ -129,16 +131,32 @@ var Api = (function() {
 
         if (context) payloadToWatson.context = context;
 
+        let options = {
+            host: 'localhost',
+            port: 3000,
+            path: messageEndpoint,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                accept: 'application/json'
+            }
+        };
 
-        // IMPORTANT this sends the POST request to the Watson Assistant and gets back the ResponsePayload
-        // Built http request
-        var http = new XMLHttpRequest();
-        http.open('POST', messageEndpoint, true);
-        http.setRequestHeader('Content-type', 'application/json');
-        http.onreadystatechange = function() {
-            if (http.readyState === XMLHttpRequest.DONE && http.status === 200 && http.responseText) {
-                Api.setResponsePayload(http.responseText);
-            } else if (http.readyState === XMLHttpRequest.DONE && http.status !== 200) {
+        let x = httpObject.request(options,(res) => {
+
+            console.log(`Status code ${res.statusCode}`);
+
+            res.on('data', (d) => {
+                console.log(`data: ${d}`);
+                // Api.setResponsePayload(d.responseText);
+            });
+
+            res.on('end', () => {
+                console.log('Finished');
+            });
+
+            res.on('error', (error) => {
+                console.log(`Error has occurred: ${error}`);
                 Api.setErrorPayload({
                     'output': {
                         'generic': [
@@ -149,19 +167,49 @@ var Api = (function() {
                         ],
                     }
                 });
-            }
-        };
+            });
+        });
+        let bodyParams = JSON.stringify(payloadToWatson);
+        x.write(bodyParams);
 
-        // IMPORTANT this is where we set the newest request payload
-        var params = JSON.stringify(payloadToWatson);
-        // Stored in variable (publicly visible through Api.getRequestPayload)
-        // to be used throughout the application
         if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
-            Api.setRequestPayload(params);
+            Api.setRequestPayload(bodyParams);
         }
 
-        // Send request
-        http.send(params);
+        x.end();
+
+        // IMPORTANT this sends the POST request to the Watson Assistant and gets back the ResponsePayload
+        // Built http request
+        // let http = new XMLHttpRequest();
+        // http.open('POST', messageEndpoint, true);
+        // http.setRequestHeader('Content-type', 'application/json');
+        // http.onreadystatechange = function() {
+        //     if (http.readyState === XMLHttpRequest.DONE && http.status === 200 && http.responseText) {
+        //         Api.setResponsePayload(http.responseText);
+        //     } else if (http.readyState === XMLHttpRequest.DONE && http.status !== 200) {
+        //         Api.setErrorPayload({
+        //             'output': {
+        //                 'generic': [
+        //                     {
+        //                         'response_type': 'text',
+        //                         'text': 'Ups, nešto je pošlo po krivu, molimo Vas da osvježite stranicu, hvala.'
+        //                     }
+        //                 ],
+        //             }
+        //         });
+        //     }
+        // };
+        //
+        // // IMPORTANT this is where we set the newest request payload
+        // var params = JSON.stringify(payloadToWatson);
+        // // Stored in variable (publicly visible through Api.getRequestPayload)
+        // // to be used throughout the application
+        // if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
+        //     Api.setRequestPayload(params);
+        // }
+        //
+        // // Send request
+        // http.send(params);
     }
 }());
  module.exports = Api;

@@ -440,7 +440,9 @@ class Users {
      */
     static signUp(req, res) {
         // pull all the data from the body provided by the query
+        console.log(req.body);
         const { name, email, isAdmin, auth_token, auth_token_valid_to } = req.body;
+        console.log(`Data is ${name}, ${email} and ${isAdmin}`);
         let generated_salt;
         let hashed_password;
 
