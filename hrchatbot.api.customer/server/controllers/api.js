@@ -1,6 +1,7 @@
 // The Api module
 let Api = (function() {
     const httpObject= require('http');
+    const axious = require('axios');
 
     const API_PORT=3000;
     const API_HOST='localhost';
@@ -80,7 +81,7 @@ let Api = (function() {
 
         let x = httpObject.request(options,(res) => {
 
-            console.log(`Status code ${res.statusCode}`);
+            // console.log(`Status code ${res.statusCode}`);
 
             res.on('data', (d) => {
                 let object = JSON.parse(d);
@@ -113,43 +114,87 @@ let Api = (function() {
         };
 
         if (context) payloadToWatson.context = context;
-        let x = await httpObject.request(options, (res) => {
-            console.log('Inside the sending request to messageEndpoint');
+        console.log('Sending HTTP request');
 
-            res.on('data', async (d) => {
 
-                let data = JSON.parse(d);
-                console.log('before setting response payload');
-                await Api.setResponsePayload(JSON.stringify(data));
-                console.log('after setting response payload');
-            });
+        const instance = axious.create({baseURL: 'http://localhost:3000'});
+        const headers = {
+            'Content-Type': 'application/json',
+                accept: 'application/json'
+        };
 
-            res.on('end', () => {
-                console.log('Finished');
-            });
+        let smth = await instance.post(
+            messageEndpoint,
+            payloadToWatson,
+            {headers: headers})
+            .then(function (response) {
+                // console.log(response.data);
+                // console.log('before setting response payload');
+                Api.setResponsePayload(JSON.stringify(response.data));
+            })
+            .catch(function(error){
+                console.log(error);
+            })
+            .finally(function () {
+                console.log('Finally block');
 
-            res.on('error', (error) => {
-                console.log(`Error has occurred: ${error}`);
-                Api.setErrorPayload({
-                    'output': {
-                        'generic': [
-                            {
-                                'response_type': 'text',
-                                'text': 'Ups, nešto je pošlo po krivu, molimo Vas da osvježite stranicu, hvala.'
-                            }
-                        ],
-                    }
-                });
-            });
-        });
-        let bodyParams = JSON.stringify(payloadToWatson);
-        x.write(bodyParams);
+                if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
+                    Api.setRequestPayload(JSON.stringify(payloadToWatson));
+                }
+            })
 
-        if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
-            Api.setRequestPayload(bodyParams);
-        }
+        // let smth = await instance.get(sessionEndpoint)
+        //         .then(function (response) {
+        //             console.log(response.data);
+        //             Api.setResponsePayload(JSON.stringify(response.data));
+        //         })
+        //         .catch(function(error){
+        //             console.log(error);
+        //         })
+        //         .finally(function () {
+        //             console.log('Finally block');
+        //             //Api.setRequestPayload(payloadToWatson);
+        //         })
 
-        x.end();
+
+            // let x = await httpObject.request(options, (res) => {
+            //     console.log('Insides
+            //     res.on('data', async (d) => {
+            //
+            //         let data = JSON.parse(d);
+            //         console.log('before setting response payload');
+            //         await Api.setResponsePayload(JSON.stringify(data));
+            //         console.log('after setting response payload');
+            //     });
+            //
+            //     res.on('end', () => {
+            //         console.log('Finished');
+            //     });
+            //
+            //     res.on('error', (error) => {
+            //         console.log(`Error has occurred: ${error}`);
+            //         Api.setErrorPayload({
+            //             'output': {
+            //                 'generic': [
+            //                     {
+            //                         'response_type': 'text',
+            //                         'text': 'Ups, nešto je pošlo po krivu, molimo Vas da osvježite stranicu, hvala.'
+            //                     }
+            //                 ],
+            //             }
+            //         });
+            //     });
+            // });
+            // console.log('Done with the HTTP request');
+            // let bodyParams = JSON.stringify(payloadToWatson);
+            // x.write(bodyParams);
+            //
+            // if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
+            //     Api.setRequestPayload(bodyParams);
+            // }
+            //
+            // x.end();
+
     }
 
 
@@ -160,13 +205,13 @@ let Api = (function() {
      * @param context is the WA context previous to the asked question/provided response by the user
      */
     async function sendRequest(text, context) {
-        console.log('Send request');
+        // console.log('Send request');
 
         let options = generateHttpOptions(messageEndpoint, 'POST');
 
-        console.log('Before sending a request to messageEndpoint');
+        // console.log('Before sending a request to messageEndpoint');
         await sendMessageToAssistant(options, text, context);
-        console.log('After sending a request to messageEndpoint')
+        // console.log('After sending a request to messageEndpoint')
     }
 }());
  module.exports = Api;

@@ -22,7 +22,7 @@ class Inquiries {
             await Api.sendRequest('', null, () => {});
             console.log('After send request');
 
-            sessionId = Api.sessionID();
+            sessionId = await Api.sessionID();
             if (Api.sessionStatusCode() === 200) {
 
                 let data = JSON.stringify( await Api.getResponsePayload());
