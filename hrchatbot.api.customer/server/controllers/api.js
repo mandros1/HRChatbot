@@ -33,11 +33,11 @@ let Api = (function() {
             requestPayload = JSON.parse(newPayloadStr);
         },
         getResponsePayload: function() {
-            console.log(`getResponsePayload: ${JSON.stringify(responsePayload)}`);
+            // console.log(`getResponsePayload: ${JSON.stringify(responsePayload)}`);
             return responsePayload;
         },
         setResponsePayload: function(newPayloadStr) {
-            console.log(`setResponsePayload: ${JSON.stringify(newPayloadStr)}`);
+            // console.log(`setResponsePayload: ${JSON.stringify(newPayloadStr)}`);
             responsePayload = JSON.parse(newPayloadStr);
         },
         setErrorPayload: function() {
@@ -102,7 +102,7 @@ let Api = (function() {
 
 
     async function sendMessageToAssistant(options, text, context) {
-        console.log('SENDING MESSAGE');
+        // console.log('SENDING MESSAGE');
         // Build request payload
         let payloadToWatson = {
             session_id: sessionId
@@ -114,7 +114,7 @@ let Api = (function() {
         };
 
         if (context) payloadToWatson.context = context;
-        console.log('Sending HTTP request');
+        // console.log('Sending HTTP request');
 
 
         const instance = axious.create({baseURL: 'http://localhost:3000'});
@@ -128,16 +128,14 @@ let Api = (function() {
             payloadToWatson,
             {headers: headers})
             .then(function (response) {
-                // console.log(response.data);
-                // console.log('before setting response payload');
+                console.log(`SETTING RESPONSE PAYLOAD TO: ${JSON.stringify(response.data)}`);
                 Api.setResponsePayload(JSON.stringify(response.data));
             })
             .catch(function(error){
                 console.log(error);
             })
             .finally(function () {
-                console.log('Finally block');
-
+                // console.log('Finally block');
                 if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
                     Api.setRequestPayload(JSON.stringify(payloadToWatson));
                 }
@@ -205,13 +203,8 @@ let Api = (function() {
      * @param context is the WA context previous to the asked question/provided response by the user
      */
     async function sendRequest(text, context) {
-        // console.log('Send request');
-
         let options = generateHttpOptions(messageEndpoint, 'POST');
-
-        // console.log('Before sending a request to messageEndpoint');
         await sendMessageToAssistant(options, text, context);
-        // console.log('After sending a request to messageEndpoint')
     }
 }());
  module.exports = Api;
