@@ -1,0 +1,25 @@
+<section fxLayout="row wrap" fxLayoutAlign="center center">
+    <h4 style="padding-bottom: 1em; text-align: center">Create new user</h4>
+    <form [formGroup]="userForm" autocomplete="off" novalidate (ngSubmit)="createUser(userForm.value)" fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <mat-card-content>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Enter name" formControlName="name" id="name">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="email" placeholder="Enter email address" formControlName="email" id="email">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="password" placeholder="Enter a password" formControlName="password" id="password">
+                <mat-error *ngIf="userForm.get('password').hasError('pattern')">
+                    Please enter at least 8 characters including a number
+                </mat-error>
+            </mat-form-field>
+            <p>Admin?</p>
+            <mat-checkbox formControlName="isAdmin" id="isAdmin"></mat-checkbox>
+        </mat-card-content>
+        <div mat-dialog-actions>
+            <button type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="!userForm.valid">Create</button> &nbsp;
+        </div>
+    </form>
+</section>

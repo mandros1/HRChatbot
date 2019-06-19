@@ -35,8 +35,28 @@ var app = express();
 
 // Bootstrap application settings
 app.use(express.static('./public')); // load UI from public folder
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(bodyParser.json());
+app.use(function(req, res, next) {
+    /*var err = new Error('Not Found');
+     err.status = 404;
+     next(err);*/
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,Authorization');
+
+    //  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    // Pass to next layer of middleware
+    next();
+});
 // Create the service wrapper
 
 var assistant = new AssistantV2({
@@ -44,16 +64,16 @@ var assistant = new AssistantV2({
 });
 
 var newContext = {
-    global : {
-        system : {
-            turn_count : 1
+    global: {
+        system: {
+            turn_count: 1
         }
     }
 };
 
 // IMPORTANT: THIS ONE SENDS THE USER MESSAGE/REQUEST TO WATSON API/ I think?
 // Endpoint to be call from the client side
-app.post('/api/message', function (req, res) {
+app.post('/api/message', function(req, res) {
     var assistantId = process.env.ASSISTANT_ID || '<assistant-id>';
     if (!assistantId || assistantId === '<assistant-id>>') {
         return res.json({
@@ -72,7 +92,7 @@ app.post('/api/message', function (req, res) {
 
     var textIn = '';
 
-    if(req.body.input) {
+    if (req.body.input) {
         textIn = req.body.input.text;
     }
 
@@ -81,18 +101,18 @@ app.post('/api/message', function (req, res) {
         session_id: req.body.session_id,
         context: contextWithAcc,
         input: {
-            message_type : 'text',
-            text : textIn,
-            options : {
-                return_context : true
+            message_type: 'text',
+            text: textIn,
+            options: {
+                return_context: true
             }
         }
     };
 
     // Send the input to the assistant service
-    assistant.message(payload, function (err, data) {
+    assistant.message(payload, function(err, data) {
         if (err) {
-            const status = (err.code  !== undefined && err.code > 0)? err.code : 500;
+            const status = (err.code !== undefined && err.code > 0) ? err.code : 500;
             return res.status(status).json(err);
         }
         return res.json(data);
@@ -100,10 +120,10 @@ app.post('/api/message', function (req, res) {
 });
 
 
-app.get('/api/session', function (req, res) {
+app.get('/api/session', function(req, res) {
     assistant.createSession({
         assistant_id: process.env.ASSISTANT_ID || '{assistant_id}',
-    }, function (error, response) {
+    }, function(error, response) {
         if (error) {
             return res.send(error);
         } else {

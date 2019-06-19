@@ -1,0 +1,32 @@
+<div class="container" style="width: 635px;">
+    <div mat-dialog-content style="height: 380px; width: 650px;">
+        <h4 style="padding-bottom: 2em; text-align: center">Edit</h4>
+        <form [formGroup]="editForm" autocomplete="off" novalidate (ngSubmit)="applyEdit(editForm.value)" fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <div class="row">
+                <mat-form-field style="width: 340px;">
+                    <input formControlName="name" id="name" matInput placeholder="Name">
+                </mat-form-field>
+                <button type="button" mat-icon-button color="accent" (click)="nameDialog()">
+                <mat-icon class="mat-19">system_update</mat-icon>
+            </button>
+            </div>
+            <div class="row">
+                <mat-form-field style="width: 340px;">
+                    <input formControlName="email" id="email" matInput placeholder="Email">
+                </mat-form-field>
+                <button type="button" mat-icon-button color="accent" (click)="emailDialog()">
+                <mat-icon class="mat-19">system_update</mat-icon>
+            </button>
+            </div>
+            <div class="row">
+                <button type="button" mat-flat-button color="accent" (click)="passwordDialog()">
+                  Change password
+                </button>
+            </div>
+            <div mat-dialog-actions>
+                <button type="button" mat-stroked-button color="primary" (click)="onNoClick()">Cancel</button> &nbsp;&nbsp;
+                <button mat-raised-button color="primary">Apply</button>
+            </div>
+        </form>
+    </div>
+</div>

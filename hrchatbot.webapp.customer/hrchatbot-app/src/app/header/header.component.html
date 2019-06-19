@@ -1,0 +1,19 @@
+<nav class="navbar navbar-default navbar">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li *ngIf="isAuthenticated">
+                    <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
+                </li>
+                <li class="dropdown" appDropdown *ngIf="isAuthenticated">
+                    <a style="cursor: pointer;" class="dropdown-toggle" role="button">Settings <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a style="cursor: pointer;" (click)="editDialog()">Edit Data</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

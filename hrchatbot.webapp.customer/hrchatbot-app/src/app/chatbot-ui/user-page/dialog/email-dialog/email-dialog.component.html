@@ -1,0 +1,18 @@
+<div class="container" style="width: 435px;">
+    <h4 style="text-align: center; padding-bottom: 1.2em;">Enter new email</h4>
+    <form [formGroup]="emailForm" autocomplete="off" novalidate (ngSubmit)="applyEdit(emailForm.value)" fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <div mat-dialog-content style="height: 100px; width: 450px;">
+            <div class="row">
+                <mat-form-field style="width: 320px;">
+                    <input formControlName="email" id="email" matInput placeholder="Email">
+                </mat-form-field>
+                <button type="button" mat-icon-button color="accent" (click)="onNoClick()">
+                    <mat-icon class="mat-19">highlight_off</mat-icon>
+                </button>
+                <button mat-icon-button color="accent">
+                  <mat-icon class="mat-19">check_circle_outline</mat-icon>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

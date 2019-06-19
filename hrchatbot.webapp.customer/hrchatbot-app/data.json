@@ -1,0 +1,53 @@
+{
+  "users": [
+    {
+      "name": "Sally Rivers",
+      "email": "sally.rivers@test.com",
+      "password": "qsqsinsqef9M",
+      "isAdmin": true,
+      "id": 1
+    },
+    {
+      "id": 2,
+      "name": "Tom Hanks",
+      "email": "tom.hanks@test.com",
+      "password": "qsqsinsq",
+      "isAdmin": false
+    },
+    {
+      "name": "Ann Smith",
+      "email": "ann@gmail.com",
+      "password": "qsqsinsq8M",
+      "isAdmin": false,
+      "id": 3
+    },
+    {
+      "id": 4,
+      "name": "Mihael Pavisic",
+      "email": "mihael.pavisic@gmail.com",
+      "password": "qsqsinsq",
+      "isAdmin": true
+    },
+    {
+      "id": 5,
+      "name": "Marin Andros",
+      "email": "marin.andros@gmail.com",
+      "password": "qsqsinsq",
+      "isAdmin": true
+    },
+    {
+      "id": 6,
+      "name": "Gary Cooper",
+      "email": "gary@test.com",
+      "password": "dsadsa123",
+      "isAdmin": true
+    },
+    {
+      "name": "Mario Juric",
+      "email": "mario.juric@megatrend.com",
+      "password": "dsadsa123saxM2",
+      "isAdmin": true,
+      "id": 8
+    }
+  ]
+}

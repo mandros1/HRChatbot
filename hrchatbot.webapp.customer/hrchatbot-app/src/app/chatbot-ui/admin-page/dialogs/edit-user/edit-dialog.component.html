@@ -1,0 +1,23 @@
+<div mat-dialog-content style="height: 380px; width: 390px;">
+    <h4 style="padding-bottom: 1em; text-align: center">Update user</h4>
+    <form [formGroup]="editForm" autocomplete="off" novalidate (ngSubmit)="updateUser(editForm.value)" fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <mat-form-field style="width: 290px;">
+            <input matInput placeholder="Name" formControlName="name" id="name">
+        </mat-form-field>
+        <mat-form-field style="width: 290px;">
+            <input matInput placeholder="Email" formControlName="email" id="email">
+        </mat-form-field>
+        <!--         <mat-form-field style="width: 290px;">
+            <input matInput placeholder="Password" formControlName="password" id="password">
+            <mat-error *ngIf="editForm.get('password').hasError('pattern')">
+                Please enter at least 8 characters including a number
+            </mat-error>
+        </mat-form-field> -->
+        <p>Admin?</p>
+        <mat-checkbox formControlName="isAdmin" id="isAdmin"></mat-checkbox>
+        <div mat-dialog-actions>
+            <button type="button" mat-raised-button color="warn" (click)="onNoClick()">Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="!editForm.valid">Update</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,31 @@
+<section fxLayout="row wrap" fxLayoutAlign="center center">
+    <mat-card fxFlex="500px" fxFlex.xs="100%">
+
+        <mat-card-title>Delete user</mat-card-title>
+        <mat-card-content>
+            <div fxLayout="column wrap" fxLayoutGap="40px">
+                <div fxLayout="row wrap" fxFlex>
+                    <div fxFlex><strong>User's id:</strong></div>
+                    <div fxFlex>{{data.id}}</div>
+                </div>
+                <div fxLayout="row wrap" fxFlex>
+                    <div fxFlex><strong>User's name:</strong></div>
+                    <div fxFlex>{{data.name}}</div>
+                </div>
+                <div fxLayout="row wrap" fxFlex>
+                    <div fxFlex><strong>User's email address:</strong></div>
+                    <div fxFlex>{{data.email}}</div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxFlex>
+                <div fxFlex><strong>Is the user admin:</strong></div>
+                <div fxFlex>{{data.isAdmin}}</div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions align="center">
+            <button type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+            <button mat-raised-button color="primary" (click)="deleteUser(data)">Delete</button>
+        </mat-card-actions>
+
+    </mat-card>
+</section>
