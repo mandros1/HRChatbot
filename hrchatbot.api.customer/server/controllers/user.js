@@ -446,7 +446,6 @@ class Users {
         let hashed_password;
 
         // TODO: we can add code here if we want to allow admins to create account with them setting the password initially
-
         let password = generateRandomStringSequence(10);
         const { salt, hashedPassword } = saltHashPassword(password);
         generated_salt = salt;

@@ -15,6 +15,8 @@
     "nodemon": "^1.19.0"
   },
   "dependencies": {
+    "async": "^3.0.1",
+    "axios": "^0.19.0",
     "babel-core": "^6.26.3",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
@@ -27,6 +29,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.2",
+    "request": "^2.88.0",
     "sequelize": "^5.8.6",
     "sequelize-cli": "^5.5.0",
     "xmlhttprequest": "^1.8.0"

@@ -9,8 +9,8 @@ let app = require('./app');
 const server = http.createServer(app);
 
 
-const hostname = '127.0.0.1';
-const port = process.env.SERVER_PORT || 3000;
+const hostname = process.env.NODE_SERVER_HOST;
+const port = process.env.NODE_SERVER_PORT || 3000;
 
 routes(app);
 

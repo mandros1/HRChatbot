@@ -5,37 +5,91 @@ const Api = require('./api');
 
 let latestResponse = null;
 
+async function getAnswerFromWatson(req, res, question, context) {
+    await Api.sendRequest(question, context, () => {});
+
+    let d = await Api.getResponsePayload();
+
+    let myObject = new Object();
+
+    // This is how we get multiple answers if there are such
+    (d.output.generic).forEach(function (answer, index) {
+        if (answer.response_type === 'text') {
+            myObject[index] = answer.text;
+        }
+    });
+
+    res.status(200).send({
+        success: true,
+        message: 'Message sent and answer received',
+        data: {
+            message: myObject
+        }
+    });
+}
+
+function getSessionIdFromWatson(req, res) {
+
+
+    Api.getSessionId(async function () {
+
+        if (Api.sessionStatusCode() === 200) {
+
+            getAnswerFromWatson(req, res, '', null)
+                .then(()=>{
+                    console.log('Success');
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        } else {
+            res.status(Api.sessionStatusCode()).send({
+                success: false,
+                message: 'Something went wrong'
+            });
+        }
+    });
+}
+
 
 class Inquiries {
 
+
+    /**
+     * This is used to initialize the API since it sets the session ID and sends a empty/initial request to WA
+     * @param req request object, which is in this case empty
+     * @param res
+     * @return {{sessionId: void}}
+     */
     static getSessionId(req, res){
-        Api.getSessionId(function() {
-            Api.sendRequest('', null);
-        });
+        getSessionIdFromWatson(req, res);
     }
 
-    static askedQuestion(req, res){
-        const { question } = req.body;
-        if (question !== undefined && question !== ''){
+    static async askedQuestion(req, res) {
+        console.log(`Question called`);
+        const {question} = req.body;
+        if (question !== undefined && question !== '') {
 
-            // this is the previous context of the conversation
-            latestResponse = Api.getResponsePayload();
+            // this is the previous context of the conversation sent by the Watson API
+            latestResponse = await Api.getResponsePayload();
 
-            // after this has been executed Api has set a response and a request payload
-            Api.sendRequest(question, latestResponse.context);
+            console.log(latestResponse);
 
-            // 1. staviti question kao request payload na API
-            // 2. izvuci iz API-ja response payload
+            if( latestResponse != null && latestResponse !== undefined && latestResponse.context !== undefined) {
 
-            // 3. sada kada imamo i question i answer
-            // payload trebamo stvoriti query objekt
-
+                getAnswerFromWatson(req, res, question, latestResponse.context)
+                    .then(()=>{
+                        console.log('Success');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            } else {
+                getSessionIdFromWatson(req, res);
+            }
         } else {
             // getSessionId needs to be called only once in order to declare the variable in the Api
             Api.getRequestPayload();
-            // Api.getSessionId(function() {
-            //     Api.sendRequest('', null);
-            // });
             latestResponse = Api.getResponsePayload();
         }
         return {
