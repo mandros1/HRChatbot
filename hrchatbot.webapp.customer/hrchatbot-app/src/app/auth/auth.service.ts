@@ -101,6 +101,11 @@ export class AuthService {
   //   }
   // }
 
+  isLoggedIn() {
+    let data = localStorage.getItem('userData');
+    return data !== null && data !== '';
+  }
+
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth']);

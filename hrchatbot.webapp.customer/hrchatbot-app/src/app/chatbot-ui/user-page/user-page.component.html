@@ -1,4 +1,4 @@
-<div class="row">
+<!--<div class="row">
     <div class="col-xs-10">
         <div class="wrapper">
             <nav class="nav" id="nav">
@@ -18,8 +18,25 @@
             </div>
             <div class="bottom" id="bottom">
                 <textarea class="input" id="input"></textarea>
-                <div class="send" id="send" appChatColor></div>
+                <button class="send" (click)="askQuestion()" id="send" appChatColor></button>
             </div>
         </div>
     </div>
+</div>-->
+
+<div id="contentParent" class="responsive-columns-wrapper">
+  <div id="chat-column-holder" class="responsive-column content-column">
+    <div class="chat-column">
+      <div id="scrollingChat"></div>
+      <p class="user-typing" id="user-typing-field"></p>
+      <div id="chat-input">
+        <label for="textInput" class= "inputOutline">
+          <input id="textInput" class="input responsive-column" placeholder="Unesite svoje pitanje ovdje" type="text" autofocus>
+        </label>
+        <button (click)="askQuestion()">Send</button>
+      </div>
+      </div>
+  </div>
 </div>
+
+<script src="js/common.js"></script>

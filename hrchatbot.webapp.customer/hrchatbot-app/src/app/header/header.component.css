@@ -1,3 +1,11 @@
 .navbar navbar-default navbar {
     color: blue;
 }
+
+.hidden_navbar {
+  display: none;
+}
+
+.shown_navbar {
+  display: block;
+}

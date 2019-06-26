@@ -1,4 +1,6 @@
-<nav class="navbar navbar-default navbar">
+<!--<nav class="navbar navbar-default navbar">-->
+<nav [ngClass]="authService.isLoggedIn() == true ? 'shown_navbar navbar navbar-default navbar' : 'hidden_navbar' ">
+<!--<nav *ngIsf="authService.isLoggedIn() === false" style="display: none;" class="navbar navbar-default navbar">-->
     <div class="container-fluid">
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">

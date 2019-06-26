@@ -24,6 +24,14 @@ export class RepositoryService {
     return this.http.post<User>(this.API + '/register', body, this.generateHeaders());
   }
 
+  public sendQuestion(body): Observable<any> {
+    return this.http.post(this.API + '/question', body, this.generateHeaders());
+  }
+
+  public getSessionId(): Observable<any> {
+    return this.http.get(this.API + '/session');
+  }
+
   public update(id: number, body): Observable<User> {
     return this.http.put<User>(this.API2 + '/' + id, body, this.generateHeaders());
   }

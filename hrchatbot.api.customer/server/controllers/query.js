@@ -21,15 +21,11 @@ async function getAnswerFromWatson(req, res, question, context) {
 
     res.status(200).send({
         success: true,
-        message: 'Message sent and answer received',
-        data: {
-            message: myObject
-        }
+        message: myObject
     });
 }
 
 function getSessionIdFromWatson(req, res) {
-
 
     Api.getSessionId(async function () {
 
