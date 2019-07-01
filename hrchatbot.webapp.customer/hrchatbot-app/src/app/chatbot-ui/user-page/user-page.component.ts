@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {RepositoryService} from "../../shared/repository.service";
 import {Common} from './common';
 
@@ -17,6 +17,7 @@ const SETTINGS = {
 
 @Component({
   selector: 'app-user-page',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.css']
 })
@@ -40,18 +41,15 @@ export class UserPageComponent implements OnInit, AfterViewInit{
             this.appendWatsonAnswer(res.message[i], false);
           }
         }
-
       })
   }
 
-  public askQuestion() {
-    let inputElement = document.getElementById('input');
+  public askQuestion(text) {
+    // let inputElement = document.getElementById('input');
     // @ts-ignore
-    let text = inputElement.value;
+    // let text = inputElement.value;
 
-    // @ts-ignore
-    console.log(inputElement.value);
-    inputElement.innerText = '';
+    // inputElement.innerText = '';
     this.appendWatsonAnswer(text, true);
     let body= {
       question: text
@@ -70,7 +68,12 @@ export class UserPageComponent implements OnInit, AfterViewInit{
   }
 
 
-
+  /**
+   * returns an element that is built in the BuildDomElement function in the common.js class
+   * @param text
+   * @param isUser
+   * @param isTop
+   */
   public generateChatDivObject(text, isUser, isTop) {
     let classes = [(isUser ? 'userBox' : 'watsonBox'), 'latest', (isTop ? 'top' : 'sub'), (isUser ? 'userBubble' : 'watsonBubble')];
     let dateNow = new Date();
@@ -84,7 +87,7 @@ export class UserPageComponent implements OnInit, AfterViewInit{
     let spanClass = [(isUser ? 'userMessage' : 'chatbotMessage')];
     let messageJson = {
       'tagName': 'div',
-      'classNames': ['container'],
+      'classNames': ['messageContainer'],
       'children': [{
         'tagName': 'div',
         'classNames': logoClass,
@@ -119,11 +122,12 @@ export class UserPageComponent implements OnInit, AfterViewInit{
 
   public appendWatsonAnswer(text, isUser) {
     // TODO: figure out what is isTop meant to be used for, but for now hardcode it to true
-    this.generateChatDivObject(text, isUser, true);
 
     let chatBoxElement = document.querySelector(SETTINGS.selectors.chatBox);
+
     let previousLatest = chatBoxElement.querySelectorAll((isUser ? SETTINGS.selectors.fromUser : SETTINGS.selectors.fromWatson) +
       SETTINGS.selectors.latest);
+
     // Previous "latest" message is no longer the most recent
     if (previousLatest) {
       Common.listForEach(previousLatest, function (element) {
@@ -131,17 +135,28 @@ export class UserPageComponent implements OnInit, AfterViewInit{
       });
     }
 
-    let p = document.createElement('p');
+    // This is hardcoded for now
+    let isTop = true;
 
-    if(isUser) {
-      p.style.cssText = "color: blue; float:right;";
-    } else {
-      p.style.cssText = "color: red; float:left;";
+    this.setResponse(text, isUser, chatBoxElement, isTop);
+  }
+
+  public setResponse(text, isUser, chatBoxElement, isTop) {
+    let chatElement = this.generateChatDivObject(text, isUser, true);
+    chatBoxElement.appendChild(chatElement);
+  }
+
+  public inputKeyDown(event) {
+    let inputBox = document.getElementById('textInput');
+    // @ts-ignore
+    if (event.keyCode === 13 && inputBox.value) {
+
+      // @ts-ignore
+      this.askQuestion(inputBox.value);
+      inputBox.innerHTML = '';
+      // @ts-ignore
+      inputBox.value = '';
     }
-    let txt = document.createTextNode(text);
-    p.appendChild(txt);
-    document.getElementById('scrollingChat').appendChild(p);
-
   }
 
 }
