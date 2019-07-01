@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {RepositoryService} from "../../shared/repository.service";
 import {Common} from './common';
+import {retry} from "rxjs/operators";
 
 const SETTINGS = {
   selectors: {
@@ -14,6 +15,8 @@ const SETTINGS = {
     watson: 'watson'
   }
 };
+
+const YOUTUBE_REGEX = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/;
 
 @Component({
   selector: 'app-user-page',
@@ -141,10 +144,53 @@ export class UserPageComponent implements OnInit, AfterViewInit{
     this.setResponse(text, isUser, chatBoxElement, isTop);
   }
 
+  /**
+   * Used to get the ID of the video by slicing the provided youtube url
+   */
+  public getVideoId(url) {
+    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    let match = url.match(regExp);
+
+    if (match && match[2].length == 11) {
+      return match[2];
+    } else {
+      return 'error';
+    }
+  }
+
+
+  public generateEmbeddedVideo(url) {
+    let videoId = this.getVideoId('http://www.youtube.com/watch?v=zbYf5_S7oJo');
+
+    let fullString = '<iframe width="560" height="315" src="//www.youtube.com/embed/'
+      + videoId + '" frameborder="0" allowfullscreen></iframe>';
+
+    // let videoSrc = "//www.youtube.com/embed/" + videoId;
+    //
+    // let videoFrame = document.createElement('iframe');
+    // videoFrame.className += " videoContainer";
+    // videoFrame.setAttribute(frameborder, '0')
+    //
+    //
+
+    return fullString;
+  }
+
+
   public setResponse(text, isUser, chatBoxElement, isTop) {
-    let chatElement = this.generateChatDivObject(text, isUser, true);
+    if(!isUser && YOUTUBE_REGEX.test(text)){
+      let mainDiv = document.createElement('div');
+      mainDiv.className += 'messageContainer';
+      let fullDomString = this.generateEmbeddedVideo(text);
+      let doc = new DOMParser().parseFromString(fullDomString, 'text/xml');
+      mainDiv.appendChild(doc);
+      let chatWindow = document.getElementById('scrollingChat');
+      chatWindow.appendChild(mainDiv);
+    }
+    let chatElement = this.generateChatDivObject(text, isUser, isTop);
     chatBoxElement.appendChild(chatElement);
   }
+
 
   public inputKeyDown(event) {
     let inputBox = document.getElementById('textInput');

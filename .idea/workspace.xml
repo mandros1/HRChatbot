@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="861d9b5e-4c62-41bc-bb39-42dccc4b3e77" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/styles.css" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,11 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="84" column="37" selection-start-line="84" selection-start-column="37" selection-end-line="84" selection-end-column="37" />
+            <state relative-caret-position="562">
+              <caret line="187" column="38" selection-start-line="187" selection-start-column="38" selection-end-line="187" selection-end-column="38" />
               <folding>
                 <element signature="e#0#82#0" expanded="true" />
               </folding>
@@ -36,11 +31,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/common.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="704">
+              <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="783" column="22" lean-forward="true" selection-start-line="783" selection-start-column="22" selection-end-line="783" selection-end-column="22" />
+            <state relative-caret-position="354">
+              <caret line="687" column="17" selection-start-line="687" selection-start-column="1" selection-end-line="687" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -49,7 +56,7 @@
         <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="628">
-              <caret line="37" column="28" lean-forward="true" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
+              <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -65,7 +72,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ISaD</find>
       <find>LOGIN</find>
       <find>;</find>
       <find>month</find>
@@ -91,10 +97,11 @@
       <find>commonBuilder</find>
       <find>containe</find>
       <find>input</find>
-      <find>container</find>
       <find>body</find>
       <find>font-size</find>
       <find>span</find>
+      <find>container</find>
+      <find>scro</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -150,8 +157,8 @@
         <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css" />
         <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.html" />
         <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.html" />
-        <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts" />
         <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css" />
+        <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts" />
       </list>
     </option>
   </component>
@@ -167,7 +174,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -235,6 +241,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -316,14 +323,16 @@
       <workItem from="1561402853891" duration="6872000" />
       <workItem from="1561623601843" duration="2458000" />
       <workItem from="1561898942840" duration="8649000" />
+      <workItem from="1561971796667" duration="1620000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="215161000" />
+    <option name="totallyTimeSpent" value="216781000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49885058" visible="true" weight="0.11032309" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -689,23 +698,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="628">
-          <caret line="37" column="28" lean-forward="true" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/common.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10">
-          <caret line="40" column="3" selection-start-line="40" selection-start-column="3" selection-end-line="40" selection-end-column="3" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/styles.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
@@ -713,20 +705,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts">
+    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/common.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="84" column="37" selection-start-line="84" selection-start-column="37" selection-end-line="84" selection-end-column="37" />
+        <state relative-caret-position="704">
+          <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
           <folding>
-            <element signature="e#0#82#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="628">
+          <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="783" column="22" lean-forward="true" selection-start-line="783" selection-start-column="22" selection-end-line="783" selection-end-column="22" />
+        <state relative-caret-position="354">
+          <caret line="687" column="17" selection-start-line="687" selection-start-column="1" selection-end-line="687" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="562">
+          <caret line="187" column="38" selection-start-line="187" selection-start-column="38" selection-end-line="187" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#82#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

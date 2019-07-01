@@ -284,6 +284,12 @@
 IMPORTANT: this part below has been imported from chatbot demo
  */
 
+
+.videoContainer {
+  width: 560px;
+  height: 315px;
+}
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
