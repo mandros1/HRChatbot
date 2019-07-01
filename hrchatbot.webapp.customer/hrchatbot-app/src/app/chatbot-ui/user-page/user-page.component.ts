@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {RepositoryService} from "../../shared/repository.service";
 import {Common} from './common';
-import {retry} from "rxjs/operators";
 
 const SETTINGS = {
   selectors: {
@@ -40,7 +39,7 @@ export class UserPageComponent implements OnInit, AfterViewInit{
         if(res.success){
           let keys = Object.keys(res.message);
 
-          for(let i=1; i<=keys.length; i++){
+          for(let i=0; i<keys.length; i++){
             this.appendWatsonAnswer(res.message[i], false);
           }
         }
@@ -51,7 +50,7 @@ export class UserPageComponent implements OnInit, AfterViewInit{
     // let inputElement = document.getElementById('input');
     // @ts-ignore
     // let text = inputElement.value;
-
+    console.log('Asked a question');
     // inputElement.innerText = '';
     this.appendWatsonAnswer(text, true);
     let body= {
@@ -62,8 +61,9 @@ export class UserPageComponent implements OnInit, AfterViewInit{
 
         if(res.success){
           let keys = Object.keys(res.message);
+          console.log(res.message);
 
-          for(let i=1; i<=keys.length; i++){
+          for(let i=0; i<keys.length; i++){
             this.appendWatsonAnswer(res.message[i], false);
           }
         }
@@ -152,6 +152,7 @@ export class UserPageComponent implements OnInit, AfterViewInit{
     let match = url.match(regExp);
 
     if (match && match[2].length == 11) {
+      console.log(match[2]);
       return match[2];
     } else {
       return 'error';
@@ -160,10 +161,9 @@ export class UserPageComponent implements OnInit, AfterViewInit{
 
 
   public generateEmbeddedVideo(url) {
-    let videoId = this.getVideoId('http://www.youtube.com/watch?v=zbYf5_S7oJo');
+    let videoId = this.getVideoId(url);
 
-    let fullString = '<iframe width="560" height="315" src="//www.youtube.com/embed/'
-      + videoId + '" frameborder="0" allowfullscreen></iframe>';
+    let fullString = '<iframe width="560" height="315" src="//www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe>';
 
     // let videoSrc = "//www.youtube.com/embed/" + videoId;
     //
@@ -178,15 +178,45 @@ export class UserPageComponent implements OnInit, AfterViewInit{
 
 
   public setResponse(text, isUser, chatBoxElement, isTop) {
-    if(!isUser && YOUTUBE_REGEX.test(text)){
-      let mainDiv = document.createElement('div');
-      mainDiv.className += 'messageContainer';
-      let fullDomString = this.generateEmbeddedVideo(text);
-      let doc = new DOMParser().parseFromString(fullDomString, 'text/xml');
-      mainDiv.appendChild(doc);
-      let chatWindow = document.getElementById('scrollingChat');
-      chatWindow.appendChild(mainDiv);
+
+    let rege = /youtu(?:.*\/v\/|.*v\=|\.be\/)([A-Za-z0-9_\-]{11})/;
+    // console.log(text);
+    if(!isUser && text !== null && text !== undefined && text !== '' && text.substring(0,2) === '<a'){
+      let ix = text.indexOf('>');
+      let txt = text.substring(ix);
+      txt = txt.substr(9, txt.length-4);
+      console.log(txt);
+
+      console.log(txt.match(rege));
+
+      if(YOUTUBE_REGEX.test(txt)){
+        // console.log('WE HAVE A YOUTUBE LINK BOSS');
+        let mainDiv = document.createElement('div');
+        mainDiv.className += 'messageContainer';
+
+        let videoId = this.getVideoId('https://www.youtube.com/watch?v=SQwUtEpk8BY');
+        let videoFrame = document.createElement('iframe');
+        let url = "//www.youtube.com/embed/" + videoId;
+        videoFrame.setAttribute("src", url);
+        videoFrame.setAttribute("allow", "fullscreen");
+        // videoFrame.setAttribute("allowfullscreen", "fullscreen");
+        videoFrame.style.width = "640px";
+        videoFrame.style.height = "480px";
+
+
+        // let fullDomString = this.generateEmbeddedVideo(txt);
+        // let doc = new DOMParser().parseFromString(fullDomString, 'text/xml');
+        // mainDiv.appendChild(doc.documentElement);
+
+        mainDiv.appendChild(videoFrame);
+
+        let chatWindow = document.getElementById('scrollingChat');
+        chatWindow.appendChild(mainDiv);
+      }
     }
+
+
+
     let chatElement = this.generateChatDivObject(text, isUser, isTop);
     chatBoxElement.appendChild(chatElement);
   }

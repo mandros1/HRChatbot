@@ -10,12 +10,15 @@ async function getAnswerFromWatson(req, res, question, context) {
 
     let d = await Api.getResponsePayload();
 
-    let myObject = new Object();
+    // console.log(`Watson object ${d.output.generic}`);
 
+    let myObject = new Object();
+    let ix = 0;
     // This is how we get multiple answers if there are such
     (d.output.generic).forEach(function (answer, index) {
         if (answer.response_type === 'text') {
-            myObject[index] = answer.text;
+            myObject[ix] = answer.text;
+            ix++;
         }
     });
 
@@ -62,16 +65,15 @@ class Inquiries {
     }
 
     static async askedQuestion(req, res) {
-        console.log(`Question called`);
+
         const {question} = req.body;
         if (question !== undefined && question !== '') {
 
             // this is the previous context of the conversation sent by the Watson API
             latestResponse = await Api.getResponsePayload();
 
-            console.log(latestResponse);
-
             if( latestResponse != null && latestResponse !== undefined && latestResponse.context !== undefined) {
+                console.log('Getting answer from Watson');
 
                 getAnswerFromWatson(req, res, question, latestResponse.context)
                     .then(()=>{
@@ -88,6 +90,8 @@ class Inquiries {
             Api.getRequestPayload();
             latestResponse = Api.getResponsePayload();
         }
+        console.log(`Latest response:`);
+        console.log(latestResponse);
         return {
             question: question,
             responsePayload: latestResponse
