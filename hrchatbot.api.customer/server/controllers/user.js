@@ -256,7 +256,7 @@ class Users {
 
                     const { hashedPassword } = hashing(password, salt);
 
-                    const hashedEmail = saltHashPassword(email, false);
+                    const hashedEmail = saltHashPassword(email, false).hashedPassword;
 
                     // changing password
                     userData.set({
@@ -577,9 +577,9 @@ class Users {
                     email,
                     "Successful Registration",
                     '',
-                    `<h2>Dobrodošli u naš HRChatbot <b>${name}</b></h2><br>` +
+                    `<h2>Dobrodošli u naš Chatbot <b>${name}</b></h2>` +
                     `Uspješno ste registrirani na naš servis sa ovom mail adresom. Svoju inicijalnu lozinku možete 
-                    postaviti na sljedećem linku <a href="localhost:4200/passwordreset/${hashedMail}">kliknite ovdje</a>. 
+                    postaviti na sljedećem linku <a href="http://localhost:4200/passwordreset/${hashedMail}">kliknite ovdje</a>. 
                     <br>Svoju lozinku ćete moći promjeniti nakon što se uspješno ulogirate u servis.
                     <br>Lijep pozdrav, vaš ChatBot Asistent!`)
             )
