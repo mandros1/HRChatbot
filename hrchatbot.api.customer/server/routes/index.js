@@ -16,6 +16,8 @@ export default (app) => {
     app.put(`${baseUrl}/users/:userId`, Users.updateUser); // update user
     app.put(`${baseUrl}/login`, Users.login); // user login
     app.put(`${baseUrl}/resetpassword`, Users.resetUserPassword); // resets the password, needs token and password in body
+    app.put(`${baseUrl}/reset/:userHash`, Users.resetUserPasswordLink); // resets the password, needs token and password in body
+
     // DELETE
     app.delete(`${baseUrl}/users/:userId`, Users.deleteUser); // delete user by ID
     // GET

@@ -35,9 +35,14 @@ let hashing = function(password, salt) {
  * @param password string of user entered password
  * @return {{salt, hashedPassword}} contains salt string and hashedPassword
  */
-function saltHashPassword(password) {
-    let salt = generateRandomStringSequence(16);
-    return hashing(password, salt);
+function saltHashPassword(stringToHash, isPassword) {
+    let salt = generateRandomStringSequence(6);
+    if(isPassword){
+        salt += generateRandomStringSequence(10);
+        return hashing(stringToHash, salt);
+    } else {
+        return hashing(stringToHash, salt);
+    }
 }
 
 /**
@@ -182,6 +187,104 @@ class Users {
                     message: 'There are no users in the database'
                 });
             });
+    }
+
+
+    static generateUserResetLink(req, res) {
+        const { email } = req.body;
+        User.findOne({
+            where: {
+                email: email
+            },
+            attributes: [
+                'name',
+                'userHash'
+            ]
+        })
+        .then(userData => {
+            // checking if there is a user by that authentication token
+            if (userData !== undefined && userData !== null) {
+
+                const userHash = userData.get('userHash');
+                const name = userData.get('name');
+
+                res.status(200).send({
+                    success: true,
+                    message: 'Password reset link was sent'
+                }),
+                mailingService.send(
+                    email,
+                    "Successful Registration",
+                    '',
+                    `<h2>Pozdrav <b>${name}</b></h2><br>` +
+                    `Sukladno vašem zahtjevu vam šaljemo link na kojemu možete resetirati svoju lozinku, a to možete 
+                    učiniti na sljedećem link-u: <a href="localhost:4200/passwordreset/${userHash}"></a>. 
+                    <br>Lijep pozdrav, vaš ChatBot Asistent!`)
+            } else {
+                res.status(500).send({
+                    success: false,
+                    message: "User under this email address doesn't exist"
+                })
+            }
+        })
+
+    }
+
+    static resetUserPasswordLink(req, res) {
+        const { password } = req.body;
+        const { userHash } = req.params;
+        const { valid, message } = validatePassword(password);
+
+        if (valid) {
+            User.findOne({
+                where: {
+                    userHash: userHash
+                },
+                attributes: [
+                    'id',
+                    'name',
+                    'email',
+                    'salt',
+                ]
+            })
+            .then(userData => {
+                // checking if there is a user by that authentication token
+                if (userData !== undefined && userData !== null) {
+                    // get stored salt and the date to which the token is valid
+                    const salt = userData.get('salt');
+                    const email = userData.get('email');
+
+                    const { hashedPassword } = hashing(password, salt);
+
+                    const hashedEmail = saltHashPassword(email, false);
+
+                    // changing password
+                    userData.set({
+                        password: hashedPassword,
+                        userHash: hashedEmail
+                    });
+                    // storing the updated object to the DB
+                    userData.save();
+
+                    res.status(200).send({
+                        success: true,
+                        message: 'Password has been set',
+                        data: userData
+                    })
+
+                } else {
+                    res.status(500).send({
+                        success: false,
+                        message: "User under the user hash doesn't exist"
+                    })
+                }
+            })
+        } else {
+            res.status(500).send({
+                success: valid,
+                message: message
+            })
+        }
     }
 
     /**
@@ -447,16 +550,18 @@ class Users {
 
         // TODO: we can add code here if we want to allow admins to create account with them setting the password initially
         let password = generateRandomStringSequence(10);
-        const { salt, hashedPassword } = saltHashPassword(password);
+        let { salt, hashedPassword } = saltHashPassword(password, true);
         generated_salt = salt;
         hashed_password = hashedPassword;
 
+        let hashedMail = saltHashPassword(email, false).hashedPassword;
 
         return User
             .create({
                 name: name,
                 email: email,
                 password: hashed_password,
+                userHash: hashedMail,
                 salt: generated_salt,
                 isAdmin: isAdmin,
                 auth_token: auth_token,
@@ -472,10 +577,11 @@ class Users {
                     email,
                     "Successful Registration",
                     '',
-                    `<h2>Welcome to our HRChatbot service <b>${name}</b></h2><br>` +
-                    `You have been successfully registered with this email address for our chatbot service 
-                    and your password is <b>${password}</b>, it an be changed once You have
-                    logged into the application.`)
+                    `<h2>Dobrodošli u naš HRChatbot <b>${name}</b></h2><br>` +
+                    `Uspješno ste registrirani na naš servis sa ovom mail adresom. Svoju inicijalnu lozinku možete 
+                    postaviti na sljedećem linku <a href="localhost:4200/passwordreset/${hashedMail}">kliknite ovdje</a>. 
+                    <br>Svoju lozinku ćete moći promjeniti nakon što se uspješno ulogirate u servis.
+                    <br>Lijep pozdrav, vaš ChatBot Asistent!`)
             )
             .catch(Sequelize.ValidationError, function(err) {
                 console.log(`Got an error :"${err}"`);
