@@ -5,17 +5,69 @@ const Api = require('./api');
 
 let latestResponse = null;
 
-async function getAnswerFromWatson(req, res, question, context) {
+/**
+ *
+ * @param req
+ * @param res
+ * @param question
+ * @param context
+ * @return {Promise<void>}
+ */
+async function getAnswerFromWatson(req, res, question, context, id) {
     await Api.sendRequest(question, context, () => {});
 
     let d = await Api.getResponsePayload();
 
-    // console.log(`Watson object ${d.output.generic}`);
-
     let myObject = new Object();
     let ix = 0;
     // This is how we get multiple answers if there are such
-    (d.output.generic).forEach(function (answer, index) {
+    (d.output.generic).forEach(function (answer) {
+
+        console.log(`Object is:`);
+        console.log(JSON.stringify(d));
+        // console.log(d.output.intents);
+        // console.log(d.output.entities);
+
+        if(question !== null && question !== undefined && question !== '') {
+            // TODO: store here in the database by calling appropriate function
+            let firstIntentName = '';
+            let firstIntentConfidence = '';
+
+            if(d.output.intents[0] !== null && d.output.intents[0] !== undefined) {
+                firstIntentName = d.output.intents[0].intent;
+                firstIntentConfidence = d.output.intents[0].confidence;
+            }
+
+            let firstEntityName = '';
+            let firstEntityLocation = '';
+            let firstEntityValue =  '';
+            let firstEntityConfidence = '';
+
+            if(d.output.entities[0] !== null && d.output.entities[0] !== undefined) {
+                firstEntityName = d.output.entities[0].entity;
+                firstEntityLocation = d.output.entities[0].location;
+                firstEntityValue = d.output.entities[0].value;
+                firstEntityConfidence = d.output.entities[0].confidence;
+            }
+
+            // return
+            Inquiry
+                .create({
+                    question: question,
+                    intent: firstIntentName,
+                    intentConfidence: parseFloat(firstIntentConfidence),
+                    entity: firstEntityName,
+                    location: firstEntityLocation,
+                    value: firstEntityValue,
+                    entityConfidence: parseFloat(firstEntityConfidence),
+                    jsonPayload: JSON.stringify(d),
+                    userId: id
+                })
+                // .then(query => res.status(201).send({
+                //     message: `Create a query object`,
+                //     query
+                // }))
+        }
         if (answer.response_type === 'text') {
             myObject[ix] = answer.text;
             ix++;
@@ -34,7 +86,7 @@ function getSessionIdFromWatson(req, res) {
 
         if (Api.sessionStatusCode() === 200) {
 
-            getAnswerFromWatson(req, res, '', null)
+            getAnswerFromWatson(req, res, '', null, 1)
                 .then(()=>{
                     console.log('Success');
                 })
@@ -66,6 +118,10 @@ class Inquiries {
 
     static async askedQuestion(req, res) {
 
+        //TODO: remove this hardcoded crap and replace with user auth_token to get the id?
+        const id = 1;
+
+
         const {question} = req.body;
         if (question !== undefined && question !== '') {
 
@@ -73,9 +129,8 @@ class Inquiries {
             latestResponse = await Api.getResponsePayload();
 
             if( latestResponse != null && latestResponse !== undefined && latestResponse.context !== undefined) {
-                console.log('Getting answer from Watson');
 
-                getAnswerFromWatson(req, res, question, latestResponse.context)
+                getAnswerFromWatson(req, res, question, latestResponse.context, id)
                     .then(()=>{
                         console.log('Success');
                     })
@@ -90,8 +145,6 @@ class Inquiries {
             Api.getRequestPayload();
             latestResponse = Api.getResponsePayload();
         }
-        console.log(`Latest response:`);
-        console.log(latestResponse);
         return {
             question: question,
             responsePayload: latestResponse
