@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="861d9b5e-4c62-41bc-bb39-42dccc4b3e77" name="Default Changelist" comment="" />
+    <list default="true" id="861d9b5e-4c62-41bc-bb39-42dccc4b3e77" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/.env" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/server/auth/authManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/server/auth/authManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/server/auth/authUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/server/auth/authUtil.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/query.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/query.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/server/migrations/20190516121503-create-user.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/server/migrations/20190516121503-create-user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/server/models/inquiry.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/server/models/inquiry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/server/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/server/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.api.customer/server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.api.customer/server/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -19,78 +35,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="212" column="27" lean-forward="true" selection-start-line="212" selection-start-column="27" selection-end-line="212" selection-end-column="27" />
+            <state relative-caret-position="48">
+              <caret line="196" column="21" lean-forward="true" selection-start-line="196" selection-start-column="21" selection-end-line="196" selection-end-column="21" />
               <folding>
                 <element signature="e#0#82#0" expanded="true" />
-                <element signature="n#!!block;n#generateChatDivObject#0;n#UserPageComponent#0" />
-                <element signature="n#!!block;n#scrollToChatBottom#0;n#UserPageComponent#0" />
-                <element signature="n#!!block;n#appendWatsonAnswer#0;n#UserPageComponent#0" />
-                <marker date="1562079738202" expanded="true" signature="7885:8108" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/server/routes/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="22" column="10" lean-forward="true" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
-              <folding>
-                <element signature="e#0#40#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/node_modules/sequelize/lib/instance-validator.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="73" column="14" selection-start-line="73" selection-start-column="14" selection-end-line="73" selection-end-column="14" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/user.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="634">
-              <caret line="581" column="123" selection-start-line="581" selection-start-column="123" selection-end-line="581" selection-end-column="123" />
-              <folding>
-                <element signature="e#14#44#0" expanded="true" />
-                <element signature="n#!!block;n#saltHashPassword#0" />
-                <element signature="n#!!block;n#validatePassword#0" />
-                <element signature="n#!!block;n#getCurrentDateInteger#0" />
-                <element signature="n#!!block;n#generateHashSalt#0;n#Users#0" />
-                <element signature="n#!!block;n#passwordComparison#0;n#Users#0" />
-                <element signature="n#!!block;n#isAdministrator#0;n#Users#0" />
-                <element signature="n#!!block;n#getAllUsers#0;n#Users#0" />
-                <element signature="n#!!block;n#resetUserPassword#0;n#Users#0" />
-                <element signature="n#!!block;n#updateUser#0;n#Users#0" />
-                <element signature="n#!!block;n#deleteUser#0;n#Users#0" />
-                <element signature="n#!!block;n#getUser#0;n#Users#0" />
-                <element signature="n#!!block;n#login#0;n#Users#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-964">
-              <caret line="334" column="10" selection-start-line="334" selection-start-column="10" selection-end-line="334" selection-end-column="10" />
+            <state relative-caret-position="435">
+              <caret line="537" column="20" selection-start-line="537" selection-start-column="20" selection-end-line="537" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -106,14 +64,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>container</find>
-      <find>scro</find>
-      <find>console</find>
-      <find>question</find>
-      <find>ask</find>
-      <find>index</find>
-      <find>REGEX</find>
-      <find>session</find>
       <find>we have</find>
       <find>cons</find>
       <find>scrolling</find>
@@ -136,6 +86,14 @@
       <find>#text</find>
       <find>reset</find>
       <find>signU</find>
+      <find>signup</find>
+      <find>local</find>
+      <find>video</find>
+      <find>chat</find>
+      <find>margin</find>
+      <find>responsi</find>
+      <find>margin-left</find>
+      <find>scroll</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -185,14 +143,14 @@
         <option value="$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/api.js" />
         <option value="$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/query.js" />
         <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.html" />
-        <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css" />
-        <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts" />
-        <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css" />
         <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.html" />
         <option value="$PROJECT_DIR$/hrchatbot.api.customer/server/routes/index.js" />
         <option value="$PROJECT_DIR$/hrchatbot.api.customer/server/models/user.js" />
         <option value="$PROJECT_DIR$/hrchatbot.api.customer/server/migrations/20190516121503-create-user.js" />
         <option value="$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/user.js" />
+        <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css" />
+        <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts" />
+        <option value="$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css" />
       </list>
     </option>
   </component>
@@ -212,77 +170,47 @@
         <subPane>
           <expand>
             <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
-              <item name="hrchatbot.api.customer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
-              <item name="hrchatbot.api.customer" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
-              <item name="hrchatbot.api.customer" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="mail_service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
-              <item name="hrchatbot.api.customer" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="migrations" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
-              <item name="hrchatbot.api.customer" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
-              <item name="hrchatbot.api.customer" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot.webapp.customer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot.webapp.customer" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot-app" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot.webapp.customer" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot-app" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot.webapp.customer" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot-app" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
+              <item name="hrchatbot.webapp.customer" type="462c0819:PsiDirectoryNode" />
+              <item name="hrchatbot-app" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="auth" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot.webapp.customer" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot-app" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
@@ -290,8 +218,8 @@
               <item name="chatbot-ui" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot.webapp.customer" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot-app" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
@@ -300,15 +228,13 @@
               <item name="user-page" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="HRChatbot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HRChatbot" type="462c0819:PsiDirectoryNode" />
+              <item name="HRChatBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HRChatBot" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot.webapp.customer" type="462c0819:PsiDirectoryNode" />
               <item name="hrchatbot-app" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="chatbot-ui" type="462c0819:PsiDirectoryNode" />
-              <item name="user-page" type="462c0819:PsiDirectoryNode" />
-              <item name="img" type="462c0819:PsiDirectoryNode" />
+              <item name="header" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -334,13 +260,13 @@
     <property name="ts.external.directory.path" value="E:\Projects\Work\HRChatbot\hrchatbot.webapp.customer\hrchatbot-app\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\AngularProjects\HRChatBot\hrchatbot.webapp.customer\hrchatbot-app\src\app\chatbot-ui\user-page" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\Projects\Work\HRChatbot\hrchatbot.api.customer\server\migrations" />
       <recent name="E:\Projects\Work\HRChatbot\hrchatbot.api.customer\server\mail_service" />
       <recent name="D:\AngularProjects\HRChatBot\hrchatbot.api.customer\server\seeders" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\AngularProjects\HRChatBot\hrchatbot.webapp.customer\hrchatbot-app\src\app\chatbot-ui\user-page" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -404,13 +330,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="245463000" />
+    <option name="totallyTimeSpent" value="248531000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
+    <frame x="1910" y="-364" width="1685" height="1406" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49885058" visible="true" weight="0.13475177" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49885058" visible="true" weight="0.18275653" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.5011494" side_tool="true" weight="0.18223235" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -423,7 +349,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="9" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49960285" visible="true" weight="0.17692907" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49960285" visible="true" weight="0.17161188" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50039715" side_tool="true" weight="0.26444972" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -702,13 +628,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="22" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/shared/repository.service.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -745,13 +664,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-964">
-          <caret line="334" column="10" selection-start-line="334" selection-start-column="10" selection-end-line="334" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/server/migrations/20190516121503-create-user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -766,20 +678,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="212" column="27" lean-forward="true" selection-start-line="212" selection-start-column="27" selection-end-line="212" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#82#0" expanded="true" />
-            <element signature="n#!!block;n#generateChatDivObject#0;n#UserPageComponent#0" />
-            <element signature="n#!!block;n#scrollToChatBottom#0;n#UserPageComponent#0" />
-            <element signature="n#!!block;n#appendWatsonAnswer#0;n#UserPageComponent#0" />
-            <marker date="1562079738202" expanded="true" signature="7885:8108" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/node_modules/sequelize/lib/instance-validator.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="343">
@@ -787,29 +685,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css">
+    <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        <state relative-caret-position="-1861">
+          <caret line="19" column="42" selection-start-line="19" selection-start-column="42" selection-end-line="19" selection-end-column="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/server/routes/index.js">
+    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/auth/auth.component.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="22" column="10" lean-forward="true" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="69">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/server/controllers/user.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="634">
-          <caret line="581" column="123" selection-start-line="581" selection-start-column="123" selection-end-line="581" selection-end-column="123" />
+        <state relative-caret-position="312">
+          <caret line="220" column="61" selection-start-line="220" selection-start-column="61" selection-end-line="220" selection-end-column="104" />
           <folding>
             <element signature="e#14#44#0" expanded="true" />
+            <element signature="e#378#424#0" />
+            <element signature="e#783#965#0" />
             <element signature="n#!!block;n#saltHashPassword#0" />
             <element signature="n#!!block;n#validatePassword#0" />
             <element signature="n#!!block;n#getCurrentDateInteger#0" />
@@ -817,12 +714,41 @@
             <element signature="n#!!block;n#passwordComparison#0;n#Users#0" />
             <element signature="n#!!block;n#isAdministrator#0;n#Users#0" />
             <element signature="n#!!block;n#getAllUsers#0;n#Users#0" />
+            <element signature="n#!!block;n#resetUserPasswordLink#0;n#Users#0" />
             <element signature="n#!!block;n#resetUserPassword#0;n#Users#0" />
             <element signature="n#!!block;n#updateUser#0;n#Users#0" />
             <element signature="n#!!block;n#deleteUser#0;n#Users#0" />
             <element signature="n#!!block;n#getUser#0;n#Users#0" />
             <element signature="n#!!block;n#login#0;n#Users#0" />
+            <element signature="n#!!block;n#signUp#0;n#Users#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hrchatbot.api.customer/server/routes/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="196" column="21" lean-forward="true" selection-start-line="196" selection-start-column="21" selection-end-line="196" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hrchatbot.webapp.customer/hrchatbot-app/src/app/chatbot-ui/user-page/user-page.component.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="537" column="20" selection-start-line="537" selection-start-column="20" selection-end-line="537" selection-end-column="20" />
         </state>
       </provider>
     </entry>

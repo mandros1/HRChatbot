@@ -1,7 +1,7 @@
 
 .videoContainer {
-  width: 50vw;
-  height: 50vh;
+  width: 60vw;
+  height: 60vh;
   margin-top: 2vh;
 }
 
@@ -100,33 +100,41 @@ div {
 /*  display: inline-block;*/
 /*}*/
 
+.row {
+  width: 90vw;
+}
+
+.container {
+  width: 90vw;
+}
+
 #contentParent {
-  height: 100%;
+  height: 90vh;
 }
 
-.responsive-columns-wrapper {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex-direction: row;
-  -ms-display: flex;
-  -ms-flex-direction: row;
-}
+/*.responsive-columns-wrapper {*/
+  /*display: -ms-flexbox;*/
+  /*display: -webkit-flex;*/
+  /*display: flex;*/
+  /*flex-direction: row;*/
+  /*-ms-display: flex;*/
+  /*-ms-flex-direction: row;*/
+/*}*/
 
-.responsive-column {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  overflow: auto;
-}
+/*.responsive-column {*/
+  /*-webkit-flex: 1;*/
+  /*-ms-flex: 1;*/
+  /*flex: 1;*/
+  /*overflow: auto;*/
+/*}*/
 
 #chat-column-holder {
   text-align: center;
 }
 
 .chat-column {
-  width: 80vw;
-  height: 80vh;
+  width: 90vw;
+  height: 90vh;
   /*padding: 0.9375rem 0 0.625rem 0;*/
   /*margin: auto;*/
   text-align: left;
@@ -147,13 +155,15 @@ div {
   overflow: scroll;
   overflow-y: scroll;
   overflow-x: hidden;
-  height: calc(90% - 8rem);
+  /*height: calc(90% - 8rem);*/
   border: 5px solid #a7afb2;
   border-radius: 1pc;
   padding: 2rem;
   background-color: white;
   z-index: 0;
-  width: 60vw;
+  width: 70vw;
+  margin-left: 10vw;
+  height: 75vh;
   -ms-overflow-style: none; /* hide scrollbar --> IE 11 */
   scrollbar-width: none; /* hide scrollbar --> Firefox 64 */
 }
@@ -524,7 +534,8 @@ span {
 
 #chat-input{
   background-color: #43bf96;
-  width: 60vw;
+  width: 70vw;
+  margin-left: 10vw;
   border-radius: 20px;
   color: white;
   margin-top: 2vh;
