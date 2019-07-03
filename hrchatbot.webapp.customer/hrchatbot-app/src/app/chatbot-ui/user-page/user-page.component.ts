@@ -239,7 +239,7 @@ export class UserPageComponent implements OnInit, AfterViewInit{
           errorParagraph.style.color = 'red';
           errorParagraph.appendChild(document.createTextNode('Video je trenutačno nedostupan'));
         }
-        let videoFrame = document.createElement('iframe');
+        let videoFrame = document.createElement( 'iframe');
         let url = "//www.youtube.com/embed/" + videoId;
         videoFrame.setAttribute("src", url);
         videoFrame.setAttribute("allowFullScreen", '');

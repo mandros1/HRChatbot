@@ -218,7 +218,7 @@ class Users {
                     '',
                     `<h2>Pozdrav <b>${name}</b></h2><br>` +
                     `Sukladno vašem zahtjevu vam šaljemo link na kojemu možete resetirati svoju lozinku, a to možete 
-                    učiniti na sljedećem link-u: <a href="localhost:4200/passwordreset/${userHash}"></a>. 
+                    učiniti na sljedećem link-u: <a href="http://localhost:4200/passwordreset/${userHash}"></a>. 
                     <br>Lijep pozdrav, vaš ChatBot Asistent!`)
             } else {
                 res.status(500).send({
