@@ -27,7 +27,8 @@ import { UserEditDialogComponent } from './chatbot-ui/user-page/dialog/edit-dial
 import { NameDialogComponent } from './chatbot-ui/user-page/dialog/name-dialog/name-dialog.component';
 import { EmailDialogComponent } from './chatbot-ui/user-page/dialog/email-dialog/email-dialog.component';
 import { PasswordDialogComponent } from './chatbot-ui/user-page/dialog/password-dialog/password-dialog.component';
-import { MatDialogRef } from '@angular/material';
+import { EmbedVideo } from 'ngx-embed-video';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { MatDialogRef } from '@angular/material';
     NameDialogComponent,
     EmailDialogComponent,
     PasswordDialogComponent,
+    ForgotPasswordComponent
 
   ],
   imports: [
@@ -58,7 +60,8 @@ import { MatDialogRef } from '@angular/material';
     HttpClientModule,
     AppRoutingModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    EmbedVideo.forRoot()
   ],
   providers: [
     RepositoryService,
@@ -78,7 +81,8 @@ import { MatDialogRef } from '@angular/material';
                     UserEditDialogComponent,
                     NameDialogComponent,
                     EmailDialogComponent,
-                    PasswordDialogComponent
+                    PasswordDialogComponent,
+                    ForgotPasswordComponent
                    ]
 })
 export class AppModule {}

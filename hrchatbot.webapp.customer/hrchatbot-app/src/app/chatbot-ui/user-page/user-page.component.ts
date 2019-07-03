@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {RepositoryService} from "../../shared/repository.service";
+import {RepositoryService} from '../../shared/repository.service';
 import {Common} from './common';
+import { EmbedVideoService } from 'ngx-embed-video';
 
 const SETTINGS = {
   selectors: {
@@ -21,9 +22,10 @@ const SETTINGS = {
   styleUrls: ['./user-page.component.css']
 })
 export class UserPageComponent implements OnInit, AfterViewInit{
-
-
-  constructor(private repoService: RepositoryService) {}
+// tslint:disable-next-line: variable-name
+  yt_iframe_html: any;
+  youtubeUrl = 'https://www.youtube.com/watch?v=iHhcHTlGtRs';
+  constructor(private repoService: RepositoryService, private embedService: EmbedVideoService) {}
 
   ngOnInit() {
     sessionStorage.clear();
@@ -33,19 +35,18 @@ export class UserPageComponent implements OnInit, AfterViewInit{
     this.repoService.getSessionId()
       .subscribe(res => {
 
-        if(res.success){
+        if (res.success) {
           let keys = Object.keys(res.message);
-
-          for(let i=1; i<=keys.length; i++){
+          for (let i = 1; i <= keys.length; i++) {
             this.appendWatsonAnswer(res.message[i], false);
           }
         }
 
-      })
+      });
   }
 
   public askQuestion() {
-    let inputElement = document.getElementById('input');
+    let inputElement = document.getElementById('textInput');
     // @ts-ignore
     let text = inputElement.value;
 
@@ -53,20 +54,22 @@ export class UserPageComponent implements OnInit, AfterViewInit{
     console.log(inputElement.value);
     inputElement.innerText = '';
     this.appendWatsonAnswer(text, true);
-    let body= {
+    let body = {
       question: text
     };
     this.repoService.sendQuestion(body)
       .subscribe(res => {
-
-        if(res.success){
+        console.log(res);
+        if (res.success) {
           let keys = Object.keys(res.message);
-
-          for(let i=1; i<=keys.length; i++){
+          for (let i = 1; i <= keys.length; i++) {
             this.appendWatsonAnswer(res.message[i], false);
+            if (text === 'youtube' || text === 'yt') {
+            this.appendWatsonAnswer(this.yt_iframe_html = this.embedService.embed(this.youtubeUrl), false);
+            }
           }
         }
-      })
+      });
   }
 
 
@@ -126,14 +129,16 @@ export class UserPageComponent implements OnInit, AfterViewInit{
       SETTINGS.selectors.latest);
     // Previous "latest" message is no longer the most recent
     if (previousLatest) {
-      Common.listForEach(previousLatest, function (element) {
+// tslint:disable-next-line: only-arrow-functions
+      Common.listForEach(previousLatest, function(element
+        ) {
         element.classList.remove('latest');
       });
     }
 
     let p = document.createElement('p');
 
-    if(isUser) {
+    if (isUser) {
       p.style.cssText = "color: blue; float:right;";
     } else {
       p.style.cssText = "color: red; float:left;";

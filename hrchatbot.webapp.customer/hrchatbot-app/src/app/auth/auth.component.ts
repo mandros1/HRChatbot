@@ -3,7 +3,9 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { AuthService, AuthResponseData, AuthData } from './auth.service';
+import { AuthService, AuthData } from './auth.service';
+import { MatDialog } from '@angular/material';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +17,7 @@ export class AuthComponent {
   isLoading = false;
   error: string = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, public dialog: MatDialog) {}
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
@@ -24,14 +26,14 @@ export class AuthComponent {
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObs: Observable<any>;
+    let authObs: Observable<AuthData>;
 
     this.isLoading = true;
 
-    //if (this.isLoginMode) {
-      authObs = this.authService.login(email, password);
-    //}
-    //else {
+    // if (this.isLoginMode) {
+    authObs = this.authService.login(email, password);
+    // }
+    // else {
     //   authObs = this.authService.signup(email, password);
     // }
 
@@ -39,7 +41,7 @@ export class AuthComponent {
       resData => {
         const data = resData.data;
         this.isLoading = false;
-         if (data.isAdmin === true) {
+        if (data.isAdmin === true) {
            this.router.navigate(['/admin-page']);
          } else {
            this.router.navigate(['/user-page']);
@@ -51,7 +53,16 @@ export class AuthComponent {
         this.isLoading = false;
       }
     );
-
     form.reset();
+  }
+
+  forgotPassword() {
+    console.log('Works');
+    const dialogRef = this.dialog.open(ForgotPasswordComponent, {
+      width: '450px',
+      height: '280px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 }

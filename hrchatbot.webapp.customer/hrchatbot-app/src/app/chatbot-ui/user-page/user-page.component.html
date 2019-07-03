@@ -25,18 +25,18 @@
 </div>-->
 
 <div id="contentParent" class="responsive-columns-wrapper">
-  <div id="chat-column-holder" class="responsive-column content-column">
-    <div class="chat-column">
-      <div id="scrollingChat"></div>
-      <p class="user-typing" id="user-typing-field"></p>
-      <div id="chat-input">
-        <label for="textInput" class= "inputOutline">
+    <div id="chat-column-holder" class="responsive-column content-column">
+        <div class="chat-column">
+            <div id="scrollingChat" [innerHtml]="yt_iframe_html"></div>
+            <p class="user-typing" id="user-typing-field"></p>
+            <div id="chat-input">
+                <label for="textInput" class="inputOutline">
           <input id="textInput" class="input responsive-column" placeholder="Unesite svoje pitanje ovdje" type="text" autofocus>
         </label>
-        <button (click)="askQuestion()">Send</button>
-      </div>
-      </div>
-  </div>
+                <button (click)="askQuestion()">Send</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="js/common.js"></script>

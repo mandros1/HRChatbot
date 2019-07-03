@@ -5,15 +5,15 @@ import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 
 import { User } from './user.model';
-export interface AuthResponseData {
-  kind: string;
-  idToken: string;
-  email: string;
-  refreshToken: string;
-  expiresIn: string;
-  localId: string;
-  registered?: boolean;
-}
+// export interface AuthResponseData {
+//   kind: string;
+//   idToken: string;
+//   email: string;
+//   refreshToken: string;
+//   expiresIn: string;
+//   localId: string;
+//   registered?: boolean;
+// }
 
 export interface AuthData {
   id: number;
@@ -37,7 +37,8 @@ export class AuthService {
   login(email: string, password: string) {
     return this.http.put<AuthData>(this.API + '/login', {
       email: email,
-      password: password
+      password: password,
+      returnSecureToken: true
     })
     .pipe(
         catchError(this.handleError),
@@ -49,6 +50,31 @@ export class AuthService {
           );
         })
       );
+  }
+
+    autoLogin() {
+    const userData: {
+      email: string;
+      auth_token: string;
+      auth_token_valid_to: string;
+    } = JSON.parse(localStorage.getItem('userData'));
+    if (!userData) {
+      return;
+    }
+
+    const loadedUser = new User(
+      userData.email,
+      userData.auth_token,
+      new Date(userData.auth_token_valid_to)
+    );
+
+    if (loadedUser.token) {
+      this.user.next(loadedUser);
+      const expirationDuration =
+        new Date(userData.auth_token_valid_to).getTime() -
+        new Date().getTime();
+      this.autoLogout(expirationDuration);
+    }
   }
 
   // login(email: string, password: string) {
@@ -74,33 +100,6 @@ export class AuthService {
       // );
   // }
 
-  // autoLogin() {
-  //   const userData: {
-  //     email: string;
-  //     id: number;
-  //     auth_token: string;
-  //     auth_token_valid_to: number;
-  //   } = JSON.parse(localStorage.getItem('userData'));
-  //   if (!userData) {
-  //     return;
-  //   }
-
-  //   const loadedUser = new User(
-  //     userData.email,
-  //     userData.id,
-  //     userData.auth_token,
-  //     new Date(userData.auth_token_valid_to)
-  //   );
-
-  //   if (loadedUser.token) {
-  //     this.user.next(loadedUser);
-  //     const expirationDuration =
-  //       new Date(userData.auth_token_valid_to).getTime() -
-  //       new Date().getTime();
-  //     this.autoLogout(expirationDuration);
-  //   }
-  // }
-
   isLoggedIn() {
     let data = localStorage.getItem('userData');
     return data !== null && data !== '';
@@ -116,22 +115,23 @@ export class AuthService {
     this.tokenExpirationTimer = null;
   }
 
-  // autoLogout(expirationDuration: number) {
-  //   this.tokenExpirationTimer = setTimeout(() => {
-  //     this.logout();
-  //   }, expirationDuration);
-  // }
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
+  }
 
   private handleAuthentication(
     email: string,
     auth_token: string,
     auth_token_valid_to: number
   ) {
-    const expirationDate = new Date(new Date().getTime() * 1000);
-    //const userID = id.toString();
+    const expiresIn = 1800000;
+    const expirationDate = new Date(new Date().getTime() + expiresIn);
     const user = new User(email, auth_token, expirationDate);
     this.user.next(user);
-    // this.autoLogout(auth_token_valid_to * 1000);
+    console.log(user);
+    this.autoLogout(expiresIn);
     localStorage.setItem('userData', JSON.stringify(user));
   }
 

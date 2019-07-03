@@ -31,6 +31,7 @@ export class PasswordDialogComponent implements OnInit {
                private formBuilder: FormBuilder, private repository: RepositoryService) { }
 
   ngOnInit() {
+    console.log(JSON.parse(localStorage.getItem('userData')).auth_token);
     this.passwordForm = this.formBuilder.group({
 // tslint:disable-next-line: max-line-length
       currentPassword: ['', [Validators.required, Validators.pattern('^(?=[^a-z]*[a-z])(?=\\D*\\d)[A-Za-z\\d!$%@#£€*?&]{8,}$')]],
@@ -47,7 +48,7 @@ export class PasswordDialogComponent implements OnInit {
   applyEdit = (passwordFormValue) => {
     let reset: any = {
       password: passwordFormValue.confirmPassword,
-      auth_token: JSON.stringify(localStorage.getItem('userData')),
+      auth_token: JSON.parse(localStorage.getItem('userData')).auth_token,
     }
     if (this.passwordForm.valid) {
         this.repository.resetPassword(reset)
