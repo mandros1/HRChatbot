@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
-import { RepositoryService } from 'src/app/shared/repository.service';
-
 import { MatDialog, MatDialogRef } from '@angular/material';
-
 import { ErrorHandlerService } from 'src/app/shared/error-handler.service';
+import { AuthService } from '../auth.service';
+import { SuccessDialogComponent } from 'src/app/shared/dialogs/success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-forgot-password',
@@ -16,7 +13,7 @@ import { ErrorHandlerService } from 'src/app/shared/error-handler.service';
 export class ForgotPasswordComponent implements OnInit {
   public emailForm: FormGroup;
   private dialogConfig;
-  constructor(private repository: RepositoryService,
+  constructor(private repository: AuthService,
               private dialog: MatDialog,
               public dialogRef: MatDialogRef < ForgotPasswordComponent >,
               private errorService: ErrorHandlerService) {}
@@ -36,8 +33,20 @@ export class ForgotPasswordComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  resetPasswordLink(email: string) {
+  resetPasswordLink(email) {
     console.log(email);
+    this.repository.resetPasswordLink(email)
+    .subscribe(res => {
+      this.dialogRef.close();
+      let dialogRef = this.dialog.open(SuccessDialogComponent, this.dialogConfig);
+    },
+    (error => {
+      this.errorService.dialogConfig = {
+        ...this.dialogConfig
+      };
+      this.errorService.handleError(error);
+    })
+  );
   }
 
 }

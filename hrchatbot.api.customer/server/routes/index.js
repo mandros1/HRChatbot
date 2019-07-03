@@ -12,6 +12,7 @@ export default (app) => {
     // USER routes
     // INSERT
     app.post(`${baseUrl}/register`, Users.signUp); // user register
+    app.post(`${baseUrl}/resetPasswordLink`, Users.generateUserResetLink); // generate reset password link
     // UPDATE
     app.put(`${baseUrl}/users/:userId`, Users.updateUser); // update user
     app.put(`${baseUrl}/login`, Users.login); // user login

@@ -29,6 +29,7 @@ import { EmailDialogComponent } from './chatbot-ui/user-page/dialog/email-dialog
 import { PasswordDialogComponent } from './chatbot-ui/user-page/dialog/password-dialog/password-dialog.component';
 import { EmbedVideo } from 'ngx-embed-video';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
     NameDialogComponent,
     EmailDialogComponent,
     PasswordDialogComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ResetPasswordComponent
 
   ],
   imports: [

@@ -37,7 +37,7 @@ let hashing = function(password, salt) {
  */
 function saltHashPassword(stringToHash, isPassword) {
     let salt = generateRandomStringSequence(6);
-    if(isPassword){
+    if (isPassword) {
         salt += generateRandomStringSequence(10);
         return hashing(stringToHash, salt);
     } else {
@@ -193,40 +193,40 @@ class Users {
     static generateUserResetLink(req, res) {
         const { email } = req.body;
         User.findOne({
-            where: {
-                email: email
-            },
-            attributes: [
-                'name',
-                'userHash'
-            ]
-        })
-        .then(userData => {
-            // checking if there is a user by that authentication token
-            if (userData !== undefined && userData !== null) {
+                where: {
+                    email: email
+                },
+                attributes: [
+                    'name',
+                    'userHash'
+                ]
+            })
+            .then(userData => {
+                // checking if there is a user by that authentication token
+                if (userData !== undefined && userData !== null) {
 
-                const userHash = userData.get('userHash');
-                const name = userData.get('name');
+                    const userHash = userData.get('userHash');
+                    const name = userData.get('name');
 
-                res.status(200).send({
-                    success: true,
-                    message: 'Password reset link was sent'
-                }),
-                mailingService.send(
-                    email,
-                    "Successful Registration",
-                    '',
-                    `<h2>Pozdrav <b>${name}</b></h2><br>` +
-                    `Sukladno vašem zahtjevu vam šaljemo link na kojemu možete resetirati svoju lozinku, a to možete 
-                    učiniti na sljedećem link-u: <a href="http://localhost:4200/passwordreset/${userHash}"></a>. 
+                    res.status(200).send({
+                            success: true,
+                            message: 'Password reset link was sent'
+                        }),
+                        mailingService.send(
+                            email,
+                            "Successful Registration",
+                            '',
+                            `<h2>Pozdrav <b>${name}</b></h2><br>` +
+                            `Sukladno vašem zahtjevu vam šaljemo link na kojemu možete resetirati svoju lozinku, a to možete 
+                    učiniti na sljedećem link-u: <a href="http://localhost:4200/passwordreset/${userHash}">kliknite ovdje</a>. 
                     <br>Lijep pozdrav, vaš ChatBot Asistent!`)
-            } else {
-                res.status(500).send({
-                    success: false,
-                    message: "User under this email address doesn't exist"
-                })
-            }
-        })
+                } else {
+                    res.status(500).send({
+                        success: false,
+                        message: "User under this email address doesn't exist"
+                    })
+                }
+            })
 
     }
 
@@ -237,48 +237,48 @@ class Users {
 
         if (valid) {
             User.findOne({
-                where: {
-                    userHash: userHash
-                },
-                attributes: [
-                    'id',
-                    'name',
-                    'email',
-                    'salt',
-                ]
-            })
-            .then(userData => {
-                // checking if there is a user by that authentication token
-                if (userData !== undefined && userData !== null) {
-                    // get stored salt and the date to which the token is valid
-                    const salt = userData.get('salt');
-                    const email = userData.get('email');
+                    where: {
+                        userHash: userHash
+                    },
+                    attributes: [
+                        'id',
+                        'name',
+                        'email',
+                        'salt',
+                    ]
+                })
+                .then(userData => {
+                    // checking if there is a user by that authentication token
+                    if (userData !== undefined && userData !== null) {
+                        // get stored salt and the date to which the token is valid
+                        const salt = userData.get('salt');
+                        const email = userData.get('email');
 
-                    const { hashedPassword } = hashing(password, salt);
+                        const { hashedPassword } = hashing(password, salt);
 
-                    const hashedEmail = saltHashPassword(email, false).hashedPassword;
+                        const hashedEmail = saltHashPassword(email, false).hashedPassword;
 
-                    // changing password
-                    userData.set({
-                        password: hashedPassword,
-                        userHash: hashedEmail
-                    });
-                    // storing the updated object to the DB
-                    userData.save();
+                        // changing password
+                        userData.set({
+                            password: hashedPassword,
+                            userHash: hashedEmail
+                        });
+                        // storing the updated object to the DB
+                        userData.save();
 
-                    res.status(200).send({
-                        success: true,
-                        message: 'Password has been set',
-                        data: userData
-                    })
+                        res.status(200).send({
+                            success: true,
+                            message: 'Password has been set',
+                            data: userData
+                        })
 
-                } else {
-                    res.status(500).send({
-                        success: false,
-                        message: "User under the user hash doesn't exist"
-                    })
-                }
-            })
+                    } else {
+                        res.status(500).send({
+                            success: false,
+                            message: "User under the user hash doesn't exist"
+                        })
+                    }
+                })
         } else {
             res.status(500).send({
                 success: valid,
