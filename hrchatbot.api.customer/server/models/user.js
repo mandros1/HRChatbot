@@ -68,6 +68,15 @@ export default (sequelize, DataTypes) => {
             },
         },
 
+        userHash: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notNull: true,
+                notEmpty: true
+            }
+        },
+
         salt: {
             type: DataTypes.STRING,
             allowNull: false,

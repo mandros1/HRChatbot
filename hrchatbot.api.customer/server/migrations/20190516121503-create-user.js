@@ -25,6 +25,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      userHash: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       salt: {
         allowNull: false,
         type: Sequelize.STRING

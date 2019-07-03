@@ -81,8 +81,6 @@ let Api = (function() {
 
         let x = httpObject.request(options,(res) => {
 
-            // console.log(`Status code ${res.statusCode}`);
-
             res.on('data', (d) => {
                 let object = JSON.parse(d);
                 sessionId = object.session_id;
@@ -102,8 +100,6 @@ let Api = (function() {
 
 
     async function sendMessageToAssistant(options, text, context) {
-        // console.log('SENDING MESSAGE');
-        // Build request payload
         let payloadToWatson = {
             session_id: sessionId
         };
@@ -114,7 +110,6 @@ let Api = (function() {
         };
 
         if (context) payloadToWatson.context = context;
-        // console.log('Sending HTTP request');
 
 
         const instance = axious.create({baseURL: 'http://localhost:3000'});
@@ -141,57 +136,6 @@ let Api = (function() {
                 }
             })
 
-        // let smth = await instance.get(sessionEndpoint)
-        //         .then(function (response) {
-        //             console.log(response.data);
-        //             Api.setResponsePayload(JSON.stringify(response.data));
-        //         })
-        //         .catch(function(error){
-        //             console.log(error);
-        //         })
-        //         .finally(function () {
-        //             console.log('Finally block');
-        //             //Api.setRequestPayload(payloadToWatson);
-        //         })
-
-
-            // let x = await httpObject.request(options, (res) => {
-            //     console.log('Insides
-            //     res.on('data', async (d) => {
-            //
-            //         let data = JSON.parse(d);
-            //         console.log('before setting response payload');
-            //         await Api.setResponsePayload(JSON.stringify(data));
-            //         console.log('after setting response payload');
-            //     });
-            //
-            //     res.on('end', () => {
-            //         console.log('Finished');
-            //     });
-            //
-            //     res.on('error', (error) => {
-            //         console.log(`Error has occurred: ${error}`);
-            //         Api.setErrorPayload({
-            //             'output': {
-            //                 'generic': [
-            //                     {
-            //                         'response_type': 'text',
-            //                         'text': 'Ups, nešto je pošlo po krivu, molimo Vas da osvježite stranicu, hvala.'
-            //                     }
-            //                 ],
-            //             }
-            //         });
-            //     });
-            // });
-            // console.log('Done with the HTTP request');
-            // let bodyParams = JSON.stringify(payloadToWatson);
-            // x.write(bodyParams);
-            //
-            // if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
-            //     Api.setRequestPayload(bodyParams);
-            // }
-            //
-            // x.end();
 
     }
 
@@ -208,3 +152,57 @@ let Api = (function() {
     }
 }());
  module.exports = Api;
+
+
+
+// let smth = await instance.get(sessionEndpoint)
+//         .then(function (response) {
+//             console.log(response.data);
+//             Api.setResponsePayload(JSON.stringify(response.data));
+//         })
+//         .catch(function(error){
+//             console.log(error);
+//         })
+//         .finally(function () {
+//             console.log('Finally block');
+//             //Api.setRequestPayload(payloadToWatson);
+//         })
+
+
+// let x = await httpObject.request(options, (res) => {
+//     console.log('Insides
+//     res.on('data', async (d) => {
+//
+//         let data = JSON.parse(d);
+//         console.log('before setting response payload');
+//         await Api.setResponsePayload(JSON.stringify(data));
+//         console.log('after setting response payload');
+//     });
+//
+//     res.on('end', () => {
+//         console.log('Finished');
+//     });
+//
+//     res.on('error', (error) => {
+//         console.log(`Error has occurred: ${error}`);
+//         Api.setErrorPayload({
+//             'output': {
+//                 'generic': [
+//                     {
+//                         'response_type': 'text',
+//                         'text': 'Ups, nešto je pošlo po krivu, molimo Vas da osvježite stranicu, hvala.'
+//                     }
+//                 ],
+//             }
+//         });
+//     });
+// });
+// console.log('Done with the HTTP request');
+// let bodyParams = JSON.stringify(payloadToWatson);
+// x.write(bodyParams);
+//
+// if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
+//     Api.setRequestPayload(bodyParams);
+// }
+//
+// x.end();
