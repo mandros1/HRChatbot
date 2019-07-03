@@ -365,7 +365,6 @@ class Users {
         const { userId } = req.params;
         // TODO: keep password and salt so that we can allow the admin to reset user password
         const { name, email, isAdmin, password, salt } = req.body;
-        console.log(req.body);
         return User
             .findByPk(userId)
             .then(user => {
@@ -391,8 +390,7 @@ class Users {
                         .catch(error => res.status(400).send({
                             success: false,
                             message: error.message
-                        }))
-                    console.log(user.isAdmin);
+                        }));
                 } else {
                     res.status(404).send({
                         success: false,

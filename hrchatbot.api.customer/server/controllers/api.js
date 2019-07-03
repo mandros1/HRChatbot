@@ -21,7 +21,7 @@ let Api = (function() {
     return {
         sendRequest: sendRequest,
         getSessionId: getSessionId,
-        sessionID: getSessionID,
+        // sessionID: getSessionID,
         sessionStatusCode: getSessionStatusCode,
 
         // The request/response getters/setters are defined here to prevent internal methods
@@ -33,15 +33,13 @@ let Api = (function() {
             requestPayload = JSON.parse(newPayloadStr);
         },
         getResponsePayload: function() {
-            // console.log(`getResponsePayload: ${JSON.stringify(responsePayload)}`);
             return responsePayload;
         },
         setResponsePayload: function(newPayloadStr) {
-            // console.log(`setResponsePayload: ${JSON.stringify(newPayloadStr)}`);
             responsePayload = JSON.parse(newPayloadStr);
         },
-        setErrorPayload: function() {
-        }
+        // setErrorPayload: function() {
+        // }
     };
 
 
@@ -53,9 +51,9 @@ let Api = (function() {
         sessionStatusCode = sessionCode;
     }
 
-    function getSessionID() {
-        return sessionId;
-    }
+    // function getSessionID() {
+    //     return sessionId;
+    // }
 
     function generateHttpOptions(path, method) {
         return {
@@ -98,21 +96,32 @@ let Api = (function() {
         x.end();
     }
 
-
+    /**
+     * Function that sends the payload with question, context and options to the Watson Assistant in the form
+     * of the POST request and sets the response, as well as the request, to the payload of the Api
+     * @param options
+     * @param text user typed in data
+     * @param context previous answer/s from the Watson Assistant (context of the conversation)
+     * @return {Promise<void>}
+     */
     async function sendMessageToAssistant(options, text, context) {
+
+        // set a session ID to the payload
         let payloadToWatson = {
             session_id: sessionId
         };
 
+        // set message to the payload
         payloadToWatson.input = {
             message_type: 'text',
             text: text,
         };
 
+        // if the previous context of conversation exists, add it in too
         if (context) payloadToWatson.context = context;
 
 
-        const instance = axious.create({baseURL: 'http://localhost:3000'});
+        const instance = axious.create({baseURL: `http://${API_HOST}:${API_PORT}`});
         const headers = {
             'Content-Type': 'application/json',
                 accept: 'application/json'
@@ -123,14 +132,13 @@ let Api = (function() {
             payloadToWatson,
             {headers: headers})
             .then(function (response) {
-                console.log(`SETTING RESPONSE PAYLOAD TO: ${JSON.stringify(response.data)}`);
+                // set a response from the Asistant in the response
                 Api.setResponsePayload(JSON.stringify(response.data));
             })
             .catch(function(error){
                 console.log(error);
             })
             .finally(function () {
-                // console.log('Finally block');
                 if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
                     Api.setRequestPayload(JSON.stringify(payloadToWatson));
                 }
@@ -152,57 +160,3 @@ let Api = (function() {
     }
 }());
  module.exports = Api;
-
-
-
-// let smth = await instance.get(sessionEndpoint)
-//         .then(function (response) {
-//             console.log(response.data);
-//             Api.setResponsePayload(JSON.stringify(response.data));
-//         })
-//         .catch(function(error){
-//             console.log(error);
-//         })
-//         .finally(function () {
-//             console.log('Finally block');
-//             //Api.setRequestPayload(payloadToWatson);
-//         })
-
-
-// let x = await httpObject.request(options, (res) => {
-//     console.log('Insides
-//     res.on('data', async (d) => {
-//
-//         let data = JSON.parse(d);
-//         console.log('before setting response payload');
-//         await Api.setResponsePayload(JSON.stringify(data));
-//         console.log('after setting response payload');
-//     });
-//
-//     res.on('end', () => {
-//         console.log('Finished');
-//     });
-//
-//     res.on('error', (error) => {
-//         console.log(`Error has occurred: ${error}`);
-//         Api.setErrorPayload({
-//             'output': {
-//                 'generic': [
-//                     {
-//                         'response_type': 'text',
-//                         'text': 'Ups, nešto je pošlo po krivu, molimo Vas da osvježite stranicu, hvala.'
-//                     }
-//                 ],
-//             }
-//         });
-//     });
-// });
-// console.log('Done with the HTTP request');
-// let bodyParams = JSON.stringify(payloadToWatson);
-// x.write(bodyParams);
-//
-// if (Object.getOwnPropertyNames(payloadToWatson).length !== 0) {
-//     Api.setRequestPayload(bodyParams);
-// }
-//
-// x.end();
