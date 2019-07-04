@@ -113,6 +113,52 @@ class Users {
         return storedHashedPassword === hashedPassword;
     }
 
+    static getUserId(req, res) {
+        const { auth_token } = req.params;
+        return User
+            .findOne({
+                where: {
+                    auth_token: auth_token
+                },
+                attributes: [
+                    'id',
+                    'auth_token_valid_to'
+                ]
+            })
+            .then(user => {
+                // if there is no user under the provided token the server sends
+                // back 404 error - resource not found
+                if (user !== undefined && user != null) {
+                    // Checking if the token is still valid
+                    if (parseInt(user.get('auth_token_valid_to')) > getCurrentDateInteger()) {
+                        res.status(200).send({
+                            success: true,
+                            message: 'User id returned',
+                            data: {
+                                id: user.get('id')
+                            }
+                        });
+                    } else {
+                        res.status(500).send({
+                            success: false,
+                            message: 'Token date is not valid'
+                        });
+                    } // invalid token else
+                } else {
+                    res.status(404).send({
+                        success: false,
+                        message: 'No user has been found'
+                    });
+                } // user not found by that token else
+            }) // ending then
+            .catch(function(err) {
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                });
+            }) // ending catch
+    }
+
     /**
      * Return true or false depending on if the user is administrator
      * @param req request object
@@ -483,6 +529,45 @@ class Users {
     }
 
 
+    static isLoggedIn(req, res) {
+        const { auth_token, auth_token_valid_to } = req.body;
+        User.findOne({
+            where: {
+                auth_token: auth_token
+            }
+        })
+            .then(async userData => {
+                if (userData !== null && userData !== undefined) {
+                    if (parseInt(auth_token_valid_to) > getCurrentDateInteger()) {
+                        res.status(200).send({
+                            success: true
+                        });
+                    } else {
+                        res.status(500).send({
+                            success: false,
+                            message: "User's token has expired"
+                        });
+                    }
+                } else {
+                    // if there is no user by the defined email we throw an error in order to return error message
+                    throw new Sequelize.ValidationError('User credentials are not correct');
+                }
+            })
+            .catch(Sequelize.ValidationError, function(err) {
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                })
+            })
+            .catch(function(err) {
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                })
+            })
+
+    }
+
     /**
      * Login function which takes in the email and password and authenticates the user
      * @param req request object holding email and password that are passed to the server from the client
@@ -504,6 +589,7 @@ class Users {
                         // returning only token and admin status
                         let data = {
                             auth_token: userData.get('auth_token'),
+                            auth_token_valid_to: userData.get('auth_token_valid_to'),
                             isAdmin: userData.get('isAdmin')
                         };
                         res.status(200).send({
@@ -575,8 +661,8 @@ class Users {
                     email,
                     "Successful Registration",
                     '',
-                    `<h2>Dobrodošli u naš Chatbot <b>${name}</b></h2>` +
-                    `Uspješno ste registrirani na naš servis sa ovom mail adresom. Svoju inicijalnu lozinku možete 
+                    `<h2>Bok ${name}, dobrodošli u naš Chatbot</h2>` +
+                    `Uspješno ste registrirani na naš servis sa ovom mail adresom. <br>Svoju inicijalnu lozinku možete 
                     postaviti na sljedećem linku <a href="http://localhost:4200/passwordreset/${hashedMail}">kliknite ovdje</a>. 
                     <br>Svoju lozinku ćete moći promjeniti nakon što se uspješno ulogirate u servis.
                     <br>Lijep pozdrav, vaš ChatBot Asistent!`)

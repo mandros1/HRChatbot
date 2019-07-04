@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {RepositoryService} from "../../shared/repository.service";
 import {Common} from './common';
-import { EmbedVideoService } from 'ngx-embed-video';
 
 const SETTINGS = {
   selectors: {
@@ -27,10 +26,8 @@ const LINK_REGEX = /^(ftp|http|https):\/\/[^ "]+$/;
   styleUrls: ['./user-page.component.css']
 })
 export class UserPageComponent implements OnInit, AfterViewInit{
-// tslint:disable-next-line: variable-name
-  yt_iframe_html: any;
-  youtubeUrl = 'https://www.youtube.com/watch?v=iHhcHTlGtRs';
-  constructor(private repoService: RepositoryService, private embedService: EmbedVideoService) {}
+
+  constructor(private repoService: RepositoryService) {}
 
   ngOnInit() {
     sessionStorage.clear();
@@ -51,10 +48,15 @@ export class UserPageComponent implements OnInit, AfterViewInit{
   }
 
   public askQuestion(text) {
+
+    let jsonObj = JSON.parse(localStorage.getItem('userData'));
+    let simpleObj = jsonObj['auth_token'];
+
     // @ts-ignore
     this.appendWatsonAnswer(text, true);
     let body = {
-      question: text
+      question: text,
+      auth_token: simpleObj
     };
     this.repoService.sendQuestion(body)
       .subscribe(res => {
@@ -63,11 +65,8 @@ export class UserPageComponent implements OnInit, AfterViewInit{
           let keys = Object.keys(res.message);
           console.log(res.message);
 
-          for(let i=0; i<keys.length; i++){
+          for (let i = 0; i < keys.length; i++) {
             this.appendWatsonAnswer(res.message[i], false);
-            if (text === 'youtube' || text === 'yt') {
-            this.appendWatsonAnswer(this.yt_iframe_html = this.embedService.embed(this.youtubeUrl), false);
-            }
           }
         }
       });
@@ -194,8 +193,6 @@ export class UserPageComponent implements OnInit, AfterViewInit{
 
 
   public setResponse(text, isUser, chatBoxElement, isTop) {
-
-
     // This part is for link recognition, only works if the message returns only the link itself
     // TODO: can be extended to recognize the link inside a wholesome text and put it in the anchor tags
     if(LINK_REGEX.test(text)) {

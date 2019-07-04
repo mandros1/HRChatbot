@@ -27,7 +27,6 @@ import { UserEditDialogComponent } from './chatbot-ui/user-page/dialog/edit-dial
 import { NameDialogComponent } from './chatbot-ui/user-page/dialog/name-dialog/name-dialog.component';
 import { EmailDialogComponent } from './chatbot-ui/user-page/dialog/email-dialog/email-dialog.component';
 import { PasswordDialogComponent } from './chatbot-ui/user-page/dialog/password-dialog/password-dialog.component';
-import { EmbedVideo } from 'ngx-embed-video';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
@@ -62,8 +61,7 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     HttpClientModule,
     AppRoutingModule,
     MaterialModule,
-    FlexLayoutModule,
-    EmbedVideo.forRoot()
+    FlexLayoutModule
   ],
   providers: [
     RepositoryService,

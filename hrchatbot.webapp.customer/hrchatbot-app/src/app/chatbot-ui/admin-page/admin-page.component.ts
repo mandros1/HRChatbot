@@ -51,7 +51,7 @@ export class AdminPageComponent implements OnInit, AfterViewInit{
       // this.dataSource.paginator = this.paginator;
 
      });
-  }
+  };
 
   public addUser() {
     const dialogRef = this.dialog.open(AddUserComponent, {

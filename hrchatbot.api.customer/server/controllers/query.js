@@ -1,5 +1,7 @@
 import model from '../models';
+
 const { Inquiry } = model;
+const { User } = model;
 
 const Api = require('./api');
 
@@ -20,54 +22,49 @@ async function getAnswerFromWatson(req, res, question, context, id) {
 
     let myObject = new Object();
     let ix = 0;
+    if(question !== null && question !== undefined && question !== '') {
+        // TODO: store here in the database by calling appropriate function
+        let firstIntentName = '';
+        let firstIntentConfidence = '';
+
+        if(d.output.intents[0] !== null && d.output.intents[0] !== undefined) {
+            firstIntentName = d.output.intents[0].intent;
+            firstIntentConfidence = d.output.intents[0].confidence;
+        }
+
+        let firstEntityName = '';
+        let firstEntityLocation = '';
+        let firstEntityValue =  '';
+        let firstEntityConfidence = '';
+
+        if(d.output.entities[0] !== null && d.output.entities[0] !== undefined) {
+            firstEntityName = d.output.entities[0].entity;
+            firstEntityLocation = d.output.entities[0].location;
+            firstEntityValue = d.output.entities[0].value;
+            firstEntityConfidence = d.output.entities[0].confidence;
+        }
+
+        // return
+        Inquiry
+            .create({
+                question: question,
+                intent: firstIntentName,
+                intentConfidence: parseFloat(firstIntentConfidence),
+                entity: firstEntityName,
+                location: firstEntityLocation,
+                value: firstEntityValue,
+                entityConfidence: parseFloat(firstEntityConfidence),
+                jsonPayload: JSON.stringify(d),
+                userId: id
+            })
+        // .then(query => res.status(201).send({
+        //     message: `Create a query object`,
+        //     query
+        // }))
+    }
     // This is how we get multiple answers if there are such
     (d.output.generic).forEach(function (answer) {
 
-        console.log(`Object is:`);
-        console.log(JSON.stringify(d));
-        // console.log(d.output.intents);
-        // console.log(d.output.entities);
-
-        if(question !== null && question !== undefined && question !== '') {
-            // TODO: store here in the database by calling appropriate function
-            let firstIntentName = '';
-            let firstIntentConfidence = '';
-
-            if(d.output.intents[0] !== null && d.output.intents[0] !== undefined) {
-                firstIntentName = d.output.intents[0].intent;
-                firstIntentConfidence = d.output.intents[0].confidence;
-            }
-
-            let firstEntityName = '';
-            let firstEntityLocation = '';
-            let firstEntityValue =  '';
-            let firstEntityConfidence = '';
-
-            if(d.output.entities[0] !== null && d.output.entities[0] !== undefined) {
-                firstEntityName = d.output.entities[0].entity;
-                firstEntityLocation = d.output.entities[0].location;
-                firstEntityValue = d.output.entities[0].value;
-                firstEntityConfidence = d.output.entities[0].confidence;
-            }
-
-            // return
-            Inquiry
-                .create({
-                    question: question,
-                    intent: firstIntentName,
-                    intentConfidence: parseFloat(firstIntentConfidence),
-                    entity: firstEntityName,
-                    location: firstEntityLocation,
-                    value: firstEntityValue,
-                    entityConfidence: parseFloat(firstEntityConfidence),
-                    jsonPayload: JSON.stringify(d),
-                    userId: id
-                })
-                // .then(query => res.status(201).send({
-                //     message: `Create a query object`,
-                //     query
-                // }))
-        }
         if (answer.response_type === 'text') {
             myObject[ix] = answer.text;
             ix++;
@@ -118,19 +115,42 @@ class Inquiries {
 
     static async askedQuestion(req, res) {
 
-        //TODO: remove this hardcoded crap and replace with user auth_token to get the id?
-        const id = 1;
 
+        const {question, auth_token} = req.body;
 
-        const {question} = req.body;
-        if (question !== undefined && question !== '') {
+        let userId = 'xyz';
+        console.log(auth_token);
+        await User
+            .findOne({
+                where: {
+                    auth_token: auth_token
+                },
+                attributes: [
+                    'id'
+                ]
+            })
+            .then(user => {
+                // if there is no user under the provided token the server sends
+                // back 404 error - resource not found
+                console.log('HERE 0');
+                if (user !== undefined && user != null) {
+                    // Checking if the token is still valid
+                    userId = user.get('id');
+                    console.log('HERE 1');
+                }
+            }) // ending then
+            .catch(function(err) {
+                console.log(`Caught and error: ${err}`)
+            });
 
+            console.log('HERE 2 ' + userId);
+        if (question !== undefined && question !== '' && userId !== 'xyz') {
             // this is the previous context of the conversation sent by the Watson API
-            latestResponse = await Api.getResponsePayload();
+            latestResponse = Api.getResponsePayload();
 
             if( latestResponse != null && latestResponse !== undefined && latestResponse.context !== undefined) {
 
-                getAnswerFromWatson(req, res, question, latestResponse.context, id)
+                getAnswerFromWatson(req, res, question, latestResponse.context, parseInt(userId))
                     .then(()=>{
                         console.log('Success');
                     })

@@ -25,6 +25,8 @@ export default (app) => {
     app.get(`${baseUrl}/users`, Users.getAllUsers); // get all users
     app.get(`${baseUrl}/users/:userId`, Users.getUser); // get user by ID
     app.get(`${baseUrl}/isAdmin`, Users.isAdministrator); // get user admin status
+    app.post(`${baseUrl}/isLoggedIn`, Users.isLoggedIn);
+
 
     // User Question
     app.post(`${baseUrl}/question`, Queries.askedQuestion);
