@@ -21,7 +21,12 @@ export class RepositoryService {
   }
 
   public isLoggedIn(body) {
-    return this.http.post(this.API + "/isLoggedIn", body, this.generateHeaders());
+    return new Promise(resolve => {
+      this.http.post(this.API + "/isLoggedIn", body, this.generateHeaders())
+        .subscribe(res => {
+            resolve(res);
+        });
+    });
   }
 
   public login(body): Observable<any>{

@@ -1,16 +1,15 @@
-import { Component, OnInit, OnDestroy, Optional, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Optional } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { UserEditDialogComponent } from '../chatbot-ui/user-page/dialog/edit-dialog/user-edit-dialog.component';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { User } from '../auth/user.model';
-import {RepositoryService} from "../shared/repository.service";
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html'
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  changeColor = false;
+export class HeaderComponent implements OnInit, OnDestroy{
   isAuthenticated = false;
   isAdmin = true;
   user: User;
@@ -23,19 +22,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if(this.authService.isLoggedIn()){
-      this.isAuthenticated = true
-    } else {
-      this.isAuthenticated = false;
-    }
+    this.authService.isUserLoggedIn()
+      .then(res => {
+        this.isAuthenticated = res;
+      });
+  }
 
-    // this.userSub = this.authService.user.subscribe(user => {
-    //   this.isAuthenticated = !!user;
-    // });
+  isUserStillLoggedIn() {
+    this.authService.isUserLoggedIn()
+      .then(res => {
+        // console.log(res);
+        this.isAuthenticated = res;
+      });
   }
 
   onLogout() {
+    // this.isAuthenticated = false;
     this.authService.logout();
+    this.isAuthenticated = false;
   }
 
   editDialog(user) {

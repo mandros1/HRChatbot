@@ -33,9 +33,12 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
   private readonly API = 'http://localhost:3000/api/v1';
+  public isAuthenticated;
 
   constructor(private http: HttpClient, private router: Router, private repo: RepositoryService) {}
 
+
+  // TODO: remove this login
   login(email: string, password: string) {
     return this.http.put<AuthData>(this.API + '/login', {
       email: email,
@@ -50,7 +53,6 @@ export class AuthService {
   }
 
   newLogin(email: string, password: string) {
-    // let admin = '';
     return this.repo.login({email: email, password: password})
       .subscribe(res => {
         this.handleAuthentication(
@@ -61,89 +63,89 @@ export class AuthService {
       });
   }
 
-  // apiLogin()
-
-    autoLogin() {
-      const data = JSON.parse(localStorage.getItem('userData'));
-      if(data !== null && data !== undefined && data !== ''){
-
-        const body = {
-          auth_token: data['auth_token'],
-          auth_token_valid_to: data['auth_token_valid_to']
-        };
-
-        this.repo.isLoggedIn(body)
-          .subscribe(res => {
-            return  res['success'];
-            // const success = res.success;
-            // if(success) {
-            //
-            //   // let jsonData = {
-            //   //   auth_token: auth_token,
-            //   //   auth_token_valid_to: auth_token_valid_to
-            //   // };
-            //   //
-            //   // localStorage.setItem('userData', JSON.stringify(jsonData));
-            //   //
-            //   // localStorage.setItem()
-            // }
-          });
-
-      }
-    // const userData: {
-    //   email: string;
-    //   auth_token: string;
-    //   auth_token_valid_to: string;
-    // } = JSON.parse(localStorage.getItem('userData'));
-    // if (!userData) {
-    //   return;
+  // async isUserLoggedIn() {
+    // const data = JSON.parse(localStorage.getItem('userData'));
+    // if (data !== null && data !== undefined && data !== '') {
+    //   const body = {
+    //     auth_token: data['auth_token'],
+    //     auth_token_valid_to: data['auth_token_valid_to']
+    //   };
+    //
+    //   let object = await this.repo.isLoggedIn(body);
+    //   console.log("RETURNED OBJECT FROM LOG:");
+    //   console.log(object);
+    //   if (object['success']) {
+    //     if (object['isAdmin']) {
+    //       this.router.navigate(['/admin-page']);
+    //     } else {
+    //       this.router.navigate(['/user-page']);
+    //     }
+    //   }
+    //   return object;
     // }
-
-
-    //
-    //
-    //
-    // const loadedUser = new User(
-    //   userData.email,
-    //   userData.auth_token,
-    //   new Date(userData.auth_token_valid_to)
-    // );
-    //
-    // if (loadedUser.token) {
-    //   this.user.next(loadedUser);
-    //   const expirationDuration =
-    //     new Date(userData.auth_token_valid_to).getTime() -
-    //     new Date().getTime();
-    //   this.autoLogout(expirationDuration);
-    // }
-  }
-
-  // login(email: string, password: string) {
-  //   return this.http
-  //     .post<AuthResponseData>(
-  //       'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCRhZAxAaOdLF5KSmRLPkoGEQl4cMbKdyk',
-  //       {
-  //         email: email,
-  //         password: password,
-  //         returnSecureToken: true
-  //       }
-  //     )
-      // .pipe(
-      //   catchError(this.handleError),
-      //   tap(resData => {
-      //     this.handleAuthentication(
-      //       resData.email,
-      //       resData.localId,
-      //       resData.idToken,
-      //       +resData.expiresIn
-      //     );
-      //   })
-      // );
   // }
 
+
+  //TODO: change so that isLogged in returns isAdmin as well so that we can use that in the auth.component.ts
+  // autoLogin() {
+  //   const data = JSON.parse(localStorage.getItem('userData'));
+  //   if (data !== null && data !== undefined && data !== '') {
+  //
+  //     const body = {
+  //       auth_token: data['auth_token'],
+  //       auth_token_valid_to: data['auth_token_valid_to']
+  //     };
+  //
+  //     console.log('before repo call');
+  //
+  //     await this.repo.isLoggedIn(body)
+  //       .subscribe(res => {
+  //         let obj = {};
+  //         console.log(`Success: ${res['success']} and admin: ${res['isAdmin']}`);
+  //         if (res['success']) {
+  //           console.log('Succeded')
+  //           obj = {
+  //             isLoggedIn: res['success'],
+  //             isAdmin: res['isAdmin']
+  //           };
+  //         } else {
+  //           obj = {
+  //             isLoggedIn: false,
+  //             isAdmin: false
+  //           };
+  //         }
+  //         return obj;
+  //       });
+  //     console.log('after repo call')
+  //   }
+  // }
+
+
+  // TODO: change this to check the
   isLoggedIn() {
     let data = localStorage.getItem('userData');
     return data !== null && data !== '';
+  }
+
+  async isUserLoggedIn() {
+    let data = localStorage.getItem('userData');
+    if (data !== null && data !== undefined && data !== '') {
+      let token = JSON.parse(data)['auth_token'];
+      let validity = parseInt(JSON.parse(data)['auth_token_valid_to']);
+
+      const body = {
+        auth_token: token,
+        auth_token_valid_to: validity
+      };
+
+      let object = await this.repo.isLoggedIn(body);
+
+      if(object['success']) this.isAuthenticated = true;
+      else                  this.isAuthenticated = false;
+
+      return object['success']
+    }
+    return false;
   }
 
 
@@ -155,33 +157,33 @@ export class AuthService {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
+    this.isAuthenticated = false;
   }
 
   autoLogout(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);
+    this.isAuthenticated = false;
   }
 
   private handleAuthentication(
-    auth_token: string,
-    auth_token_valid_to: number,
-    isAdmin
-  ) {
-    console.log(auth_token);
-    console.log(auth_token_valid_to);
+                                auth_token: string,
+                                auth_token_valid_to: number,
+                                isAdmin) {
+
     const expiresIn = 1800000;
-    // const expirationDate = new Date(new Date().getTime() + expiresIn);
+
     const user = new User(auth_token, auth_token_valid_to);
     this.user.next(user);
-    // console.log(user);
+
     this.autoLogout(expiresIn);
 
     let jsonData = {
       auth_token: auth_token,
       auth_token_valid_to: auth_token_valid_to
     };
-
+    this.isAuthenticated = true;
     localStorage.setItem('userData', JSON.stringify(jsonData));
   }
 

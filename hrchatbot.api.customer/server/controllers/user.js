@@ -159,6 +159,53 @@ class Users {
             }) // ending catch
     }
 
+
+    static isValidToken(req, res) {
+        const { auth_token } = req.body;
+        return User
+            .findOne({
+                where: {
+                    auth_token: auth_token
+                },
+                attributes: [
+                    'isAdmin',
+                    'auth_token_valid_to'
+                ]
+            })
+            .then(user => {
+                // if there is no user under the provided token the server sends
+                // back 404 error - resource not found
+                if (user !== undefined && user != null) {
+                    // Checking if the token is still valid
+                    if (parseInt(user.get('auth_token_valid_to')) > getCurrentDateInteger()) {
+                        res.status(200).send({
+                            success: true,
+                            message: 'User admin status returned',
+                            data: {
+                                isAdmin: user.get('isAdmin')
+                            }
+                        });
+                    } else {
+                        res.status(500).send({
+                            success: false,
+                            message: 'Token date is not valid'
+                        });
+                    } // invalid token else
+                } else {
+                    res.status(404).send({
+                        success: false,
+                        message: 'No user has been found'
+                    });
+                } // user not found by that token else
+            }) // ending then
+            .catch(function(err) {
+                res.status(500).send({
+                    success: false,
+                    message: err.message
+                });
+            }) // ending catch
+    }
+
     /**
      * Return true or false depending on if the user is administrator
      * @param req request object
@@ -534,38 +581,41 @@ class Users {
         User.findOne({
             where: {
                 auth_token: auth_token
+            },
+            attributes: [
+                'isAdmin'
+            ]
+        })
+        .then(async userData => {
+            if (userData !== null && userData !== undefined) {
+                if (parseInt(auth_token_valid_to) > getCurrentDateInteger()) {
+                    res.status(200).send({
+                        success: true,
+                        isAdmin: userData.get('isAdmin')
+                    });
+                } else {
+                    res.status(500).send({
+                        success: false,
+                        message: "User's token has expired"
+                    });
+                }
+            } else {
+                // if there is no user by the defined email we throw an error in order to return error message
+                throw new Sequelize.ValidationError('User credentials are not correct');
             }
         })
-            .then(async userData => {
-                if (userData !== null && userData !== undefined) {
-                    if (parseInt(auth_token_valid_to) > getCurrentDateInteger()) {
-                        res.status(200).send({
-                            success: true
-                        });
-                    } else {
-                        res.status(500).send({
-                            success: false,
-                            message: "User's token has expired"
-                        });
-                    }
-                } else {
-                    // if there is no user by the defined email we throw an error in order to return error message
-                    throw new Sequelize.ValidationError('User credentials are not correct');
-                }
+        .catch(Sequelize.ValidationError, function(err) {
+            res.status(500).send({
+                success: false,
+                message: err.message
             })
-            .catch(Sequelize.ValidationError, function(err) {
-                res.status(500).send({
-                    success: false,
-                    message: err.message
-                })
+        })
+        .catch(function(err) {
+            res.status(500).send({
+                success: false,
+                message: err.message
             })
-            .catch(function(err) {
-                res.status(500).send({
-                    success: false,
-                    message: err.message
-                })
-            })
-
+        })
     }
 
     /**
