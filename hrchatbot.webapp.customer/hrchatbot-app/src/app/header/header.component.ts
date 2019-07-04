@@ -28,14 +28,6 @@ export class HeaderComponent implements OnInit, OnDestroy{
       });
   }
 
-  isUserStillLoggedIn() {
-    this.authService.isUserLoggedIn()
-      .then(res => {
-        // console.log(res);
-        this.isAuthenticated = res;
-      });
-  }
-
   onLogout() {
     // this.isAuthenticated = false;
     this.authService.logout();

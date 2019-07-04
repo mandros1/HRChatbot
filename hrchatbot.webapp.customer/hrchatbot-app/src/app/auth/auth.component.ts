@@ -14,7 +14,6 @@ import {RepositoryService} from "../shared/repository.service";
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit{
-  //isLoginMode = true;
   isLoading = false;
   error: string = null;
 
@@ -58,13 +57,10 @@ export class AuthComponent implements OnInit{
 
     this.isLoading = true;
 
-    // if (this.isLoginMode) {
+
     authObs = this.authService.login(email, password);
     this.authService.newLogin(email, password);
-    // }
-    // else {
-    //   authObs = this.authService.signup(email, password);
-    // }
+
   console.log('OnSubmit called');
     authObs.subscribe(
       resData => {

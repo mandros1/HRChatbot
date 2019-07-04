@@ -454,10 +454,8 @@ class Users {
      * @return {Promise<T | never>}
      */
     static updateUser(req, res) {
-        // TODO: create a similar function that will do this over the user email?
         const { userId } = req.params;
-        // TODO: keep password and salt so that we can allow the admin to reset user password
-        const { name, email, isAdmin, password, salt } = req.body;
+        const { name, email, isAdmin } = req.body;
         return User
             .findByPk(userId)
             .then(user => {
@@ -465,7 +463,6 @@ class Users {
                     user.update({
                             name: name || user.name,
                             email: email || user.email,
-                            //password: password || user.password,
                             isAdmin: isAdmin || user.isAdmin
                         })
                         .then(updatedUser => {
@@ -475,7 +472,6 @@ class Users {
                                 data: {
                                     name: updatedUser.name,
                                     email: updatedUser.email,
-                                    //password: updatedUser.password,
                                     isAdmin: updatedUser.isAdmin
                                 }
                             })

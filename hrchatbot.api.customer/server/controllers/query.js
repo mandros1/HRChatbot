@@ -4,6 +4,8 @@ const { Inquiry } = model;
 const { User } = model;
 
 const Api = require('./api');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 let latestResponse = null;
 
@@ -113,9 +115,8 @@ class Inquiries {
         getSessionIdFromWatson(req, res);
     }
 
+
     static async askedQuestion(req, res) {
-
-
         const {question, auth_token} = req.body;
 
         let userId = 'xyz';
@@ -132,18 +133,15 @@ class Inquiries {
             .then(user => {
                 // if there is no user under the provided token the server sends
                 // back 404 error - resource not found
-                console.log('HERE 0');
                 if (user !== undefined && user != null) {
                     // Checking if the token is still valid
                     userId = user.get('id');
-                    console.log('HERE 1');
                 }
             }) // ending then
             .catch(function(err) {
                 console.log(`Caught and error: ${err}`)
             });
 
-            console.log('HERE 2 ' + userId);
         if (question !== undefined && question !== '' && userId !== 'xyz') {
             // this is the previous context of the conversation sent by the Watson API
             latestResponse = Api.getResponsePayload();
@@ -171,26 +169,101 @@ class Inquiries {
         }
     }
 
-    /**
-     * Creates a query object in the database
-     * @param req request object that holds all the values for the columns
-     * @param res response object used to send back a message to the user
-     * @return {Promise<T | never>}
-     */
-    static create(req, res) {
-        const { question, answer, confidence } = req.body;
-        const { userId } = req.params;
+
+    // /**
+    //  * Creates a query object in the database
+    //  * @param req request object that holds all the values for the columns
+    //  * @param res response object used to send back a message to the user
+    //  * @return {Promise<T | never>}
+    //  */
+    // static create(req, res) {
+    //     const { question,
+    //         intent,
+    //         intentConfidence,
+    //         entity,
+    //         entityConfidence,
+    //         location,
+    //         value,
+    //         jsonPayload,
+    //         userId} = req.body;
+    //     const { userId } = req.params;
+    //     return Inquiry
+    //         .create({
+    //             question,
+    //             answer,
+    //             userId,
+    //             confidence
+    //         })
+    //         .then(query => res.status(201).send({
+    //             message: `Create a query object`,
+    //             query
+    //         }))
+    // }
+
+
+    static getAllEntities(req, res) {
         return Inquiry
-            .create({
-                question,
-                answer,
-                userId,
-                confidence
+            .findAll({
+                where: {
+                    entity: {
+                        [Op.notLike]: ""
+                    }
+                },
+                attributes: [
+                    'id',
+                    'question',
+                    'intent',
+                    'intentConfidence',
+                    'entity',
+                    'location',
+                    'value',
+                    'entityConfidence'
+                ],
+                group: ['entity', 'id']
             })
-            .then(query => res.status(201).send({
-                message: `Create a query object`,
-                query
-            }))
+            .then(queries => {
+                // if there are no queries in the database error is returned along with
+                // 404 - resource not found code
+                if(queries != null && queries.length > 0) res.status(200).send({
+                    success: true,
+                    message: 'Queries fetched',
+                    queries
+                });
+                else res.status(404).send({
+                    success: false,
+                    message: 'There are no queries in the database'
+                });
+            });
+    }
+
+
+    static getAllEntitiesCount(req, res) {
+        return Inquiry
+            .findAll({
+                where: {
+                    entity: {
+                        [Op.notLike]: ""
+                    }
+                },
+                attributes: [
+                    [Sequelize.fn('COUNT', Sequelize.col('entity')), 'count'],
+                    'entity'
+                ],
+                group: ['entity']
+            })
+            .then(queries => {
+                // if there are no queries in the database error is returned along with
+                // 404 - resource not found code
+                if(queries != null && queries.length > 0) res.status(200).send({
+                    success: true,
+                    message: 'Queries fetched',
+                    queries
+                });
+                else res.status(404).send({
+                    success: false,
+                    message: 'There are no queries in the database'
+                });
+            });
     }
 
     /**
@@ -234,31 +307,45 @@ class Inquiries {
             .then(query => res.status(200).send(query))
     }
 
-    /**
-     * Updates the data for the specific query based on its query id
-     * @param req
-     * @param res
-     * @return {Promise<T | never>}
-     */
+
     static updateQuery(req, res) {
-        const { question, answer, confidence } = req.body;
+        const { question,
+            intent,
+            intentConfidence,
+            entity,
+            entityConfidence,
+            location,
+            value,
+            jsonPayload,
+            userId} = req.body;
         const { queryId } = req.params.queryId;
         return Inquiry
             .findByPk(queryId)
             .then((query) => {
                 query.update({
                     question: question || query.question,
-                    answer: answer || query.answer,
-                    confidence: confidence || query.confidence
+                    intent: intent || query.intent,
+                    intentConfidence: intentConfidence || query.intentConfidence,
+                    entity: entity || query.entity,
+                    entityConfidence: entityConfidence || query.entityConfidence,
+                    location: location || query.location,
+                    value: value || query.value,
+                    jsonPayload: jsonPayload || query.jsonPayload,
+                    userId: userId || query.userId,
                 })
                     .then((updatedQuery) => {
                         res.status.code(200).send({
                             message: 'Query updated successfully',
                             data: {
-                                title: updatedQuery.title,
-                                author: updatedQuery.author,
-                                description: updatedQuery.description,
-                                quantity: updatedQuery.quantity
+                                question: updatedQuery.question,
+                                intent: updatedQuery.intent,
+                                intentConfidence: updatedQuery.intentConfidence,
+                                entity: updatedQuery.entity,
+                                entityConfidence: updatedQuery.entityConfidence,
+                                location: updatedQuery.location,
+                                value: updatedQuery.value,
+                                jsonPayload: updatedQuery.jsonPayload,
+                                userId: updatedQuery.userId,
                             }
                         })
                     })
