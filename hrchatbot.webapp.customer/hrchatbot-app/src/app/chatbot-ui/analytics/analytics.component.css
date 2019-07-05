@@ -5,12 +5,13 @@
   padding: 10px;
 }
 
-.row{
-  width: 90vw;
-  margin-left: 5vw;
-}
 
 .container {
   width: 100vw;
   margin: 0;
+}
+
+.container > .row {
+  width: 90vw;
+  margin-left: 4vw;
 }

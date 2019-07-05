@@ -65,69 +65,6 @@ export class AuthService {
       });
   }
 
-  // async isUserLoggedIn() {
-    // const data = JSON.parse(localStorage.getItem('userData'));
-    // if (data !== null && data !== undefined && data !== '') {
-    //   const body = {
-    //     auth_token: data['auth_token'],
-    //     auth_token_valid_to: data['auth_token_valid_to']
-    //   };
-    //
-    //   let object = await this.repo.isLoggedIn(body);
-    //   console.log("RETURNED OBJECT FROM LOG:");
-    //   console.log(object);
-    //   if (object['success']) {
-    //     if (object['isAdmin']) {
-    //       this.router.navigate(['/admin-page']);
-    //     } else {
-    //       this.router.navigate(['/user-page']);
-    //     }
-    //   }
-    //   return object;
-    // }
-  // }
-
-
-  //TODO: change so that isLogged in returns isAdmin as well so that we can use that in the auth.component.ts
-  // autoLogin() {
-  //   const data = JSON.parse(localStorage.getItem('userData'));
-  //   if (data !== null && data !== undefined && data !== '') {
-  //
-  //     const body = {
-  //       auth_token: data['auth_token'],
-  //       auth_token_valid_to: data['auth_token_valid_to']
-  //     };
-  //
-  //     console.log('before repo call');
-  //
-  //     await this.repo.isLoggedIn(body)
-  //       .subscribe(res => {
-  //         let obj = {};
-  //         console.log(`Success: ${res['success']} and admin: ${res['isAdmin']}`);
-  //         if (res['success']) {
-  //           console.log('Succeded')
-  //           obj = {
-  //             isLoggedIn: res['success'],
-  //             isAdmin: res['isAdmin']
-  //           };
-  //         } else {
-  //           obj = {
-  //             isLoggedIn: false,
-  //             isAdmin: false
-  //           };
-  //         }
-  //         return obj;
-  //       });
-  //     console.log('after repo call')
-  //   }
-  // }
-
-
-  // TODO: change this to check the
-  isLoggedIn() {
-    let data = localStorage.getItem('userData');
-    return data !== null && data !== '';
-  }
 
   async isUserLoggedIn() {
     let data = localStorage.getItem('userData');
@@ -147,10 +84,15 @@ export class AuthService {
 
       if (object['isAdmin']) this.isAdmin = true;
       else                  this.isAdmin = false;
-
-      return object['success']
+      return {
+        isLoggedIn: this.isAuthenticated,
+        isAdmin: this.isAdmin
+      };
     }
-    return false;
+    return {
+      isLoggedIn: false,
+      isAdmin: false
+    };
   }
 
 

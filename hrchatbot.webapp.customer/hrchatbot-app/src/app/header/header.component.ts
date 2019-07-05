@@ -23,11 +23,16 @@ export class HeaderComponent implements OnInit, OnDestroy{
     @Optional() public dialogRef: MatDialogRef<UserEditDialogComponent>
   ) {}
 
-  ngOnInit() {
-    console.log(`IS ADMIN: ${this.authService.isAdmin}`);
-    this.authService.isUserLoggedIn()
+  async ngOnInit() {
+    await this.authService.isUserLoggedIn()
       .then(res => {
-        this.isAuthenticated = res;
+        let logged = res['isLoggedIn'];
+        let admin = res['isAdmin'];
+        if(logged && admin){
+          this.router.navigate(['/admin-page']);
+        } else if(logged && !admin){
+          this.router.navigate(['/user-page']);
+        }
       });
   }
 
