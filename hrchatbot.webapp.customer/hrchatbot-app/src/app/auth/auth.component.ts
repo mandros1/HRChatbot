@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -16,6 +16,8 @@ import {RepositoryService} from "../shared/repository.service";
 export class AuthComponent implements OnInit, OnChanges{
   isLoading = false;
   error: string = null;
+  @ViewChild('slider', { static: false }) slider: ElementRef;
+  isChecked = false;
 
   constructor(
               private authService: AuthService,
@@ -23,6 +25,10 @@ export class AuthComponent implements OnInit, OnChanges{
               public dialog: MatDialog,
               private repo: RepositoryService) {}
 
+
+  changeChecked() {
+    this.isChecked = this.slider.nativeElement.checked;
+  }
 
   async ngOnInit(){
     const data = JSON.parse(localStorage.getItem('userData'));
@@ -77,11 +83,11 @@ export class AuthComponent implements OnInit, OnChanges{
 
     this.isLoading = true;
 
+    console.log(`Value is ${this.isChecked}`);
 
     authObs = this.authService.login(email, password);
-    this.authService.newLogin(email, password);
+    this.authService.newLogin(email, password, this.isChecked);
 
-  console.log('OnSubmit called');
     authObs.subscribe(
       resData => {
         const data = resData.data;

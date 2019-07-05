@@ -53,13 +53,14 @@ export class AuthService {
       );
   }
 
-  newLogin(email: string, password: string) {
+  newLogin(email: string, password: string, isChecked: boolean) {
     return this.repo.login({email: email, password: password})
       .subscribe(res => {
         this.handleAuthentication(
           res.data.auth_token,
           res.data.auth_token_valid_to,
-          res.data.isAdmin
+          res.data.isAdmin,
+          isChecked
         );
       });
   }
@@ -176,7 +177,8 @@ export class AuthService {
   private handleAuthentication(
                                 auth_token: string,
                                 auth_token_valid_to: number,
-                                isAdmin) {
+                                isAdmin,
+                                isChecked) {
 
     const expiresIn = 1800000;
 
@@ -194,7 +196,9 @@ export class AuthService {
     this.isAdmin = isAdmin;
 
     console.log(`Handle auth ${this.isAuthenticated} and admin: ${this.isAdmin}`);
-    localStorage.setItem('userData', JSON.stringify(jsonData));
+    if(isChecked){
+      localStorage.setItem('userData', JSON.stringify(jsonData));
+    }
   }
 
   private handleError(errorRes: HttpErrorResponse) {

@@ -28,12 +28,17 @@ export class AuthGuard implements CanActivate {
     return this.authService.user.pipe(
       take(1),
       map(user => {
-        const isAuth = this.authService.isAuthenticated;
-        console.log(`Auth guard : ${isAuth}`);
-        if (isAuth) {
+        if(this.authService.isAuthenticated){
           return true;
+        } else {
+          return this.router.createUrlTree(['/auth']);
         }
-        return this.router.createUrlTree(['/auth']);
+        // const isAuth = this.authService.isAuthenticated;
+        // console.log(`Auth guard : ${isAuth}`);
+        // if (isAuth) {
+        //   return true;
+        // }
+        // return this.router.createUrlTree(['/auth']);
       })
       // tap(isAuth => {
       //   if (!isAuth) {
