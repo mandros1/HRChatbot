@@ -1,11 +1,42 @@
-<mat-tab-group class="mat-tab-group-analytics">
-  <mat-tab label="Daily">
-    <canvas id="myChart" width="400" height="400"></canvas>
+<mat-tab-group class="mat-tab-group-analytics" (selectedTabChange)="onLinkClick($event)">
+  <mat-tab label="Dnevna aktivnost">
+    <!--<canvas id="myChart" width="400" height="400"></canvas>-->
+    <div class="chart-container" style="position: relative; height:60vh; width:70vw; margin-left: 10vw; margin-top: 3vh; margin-bottom: 3vh;">
+      <canvas baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              id="myChart">
+      </canvas>
+    </div>
   </mat-tab>
-  <mat-tab label="Entity">
-    Entities
+  <mat-tab label="Entiteti">
+    <div class="chart-container" style="position: relative; height:60vh; width:70vw; margin-left: 10vw; margin-top: 3vh; margin-bottom: 3vh;">
+      <canvas baseChart
+              [datasets]="barChartDataEntity"
+              [labels]="barChartLabelsEntity"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              id="entityChart">
+      </canvas>
+    </div>
+    <div>
+
+    </div>
   </mat-tab>
-  <mat-tab label="Intent">
-    Intents
+  <mat-tab label="Intentovi">
+    <div class="chart-container" style="position: relative; height:60vh; width:70vw; margin-left: 10vw; margin-top: 3vh; margin-bottom: 3vh;">
+      <canvas baseChart
+              [datasets]="barChartDataIntent"
+              [labels]="barChartLabelsIntent"
+              [options]="barChartOptionsIntent"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              id="intentChart">
+      </canvas>
+    </div>
   </mat-tab>
 </mat-tab-group>

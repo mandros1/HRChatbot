@@ -344,7 +344,7 @@ class Inquiries {
                     [Sequelize.fn('LEFT', Sequelize.col('dateOfCreation'), 8), 'doc']
                 ],
                 order: [
-                    [Sequelize.fn('COUNT', Sequelize.col('intent')), 'DESC']
+                    [Sequelize.fn('LEFT', Sequelize.col('dateOfCreation'), 8)]
                 ],
                 group: ['doc']
             })
