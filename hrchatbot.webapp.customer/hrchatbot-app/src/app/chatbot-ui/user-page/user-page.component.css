@@ -183,13 +183,15 @@ div {
 
 /*}*/
 
-.row {
-    width: 90vw;
-}
+
 
 .container {
     width: 90vw;
     overflow: auto;
+}
+
+.container > .row {
+  width: 90vw;
 }
 
 #contentParent {
