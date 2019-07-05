@@ -30,6 +30,7 @@ import { PasswordDialogComponent } from './chatbot-ui/user-page/dialog/password-
 import { EmbedVideo } from 'ngx-embed-video';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @NgModule({
   declarations: [

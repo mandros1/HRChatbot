@@ -54,7 +54,6 @@ export class AuthService {
 
     autoLogin() {
     const userData: {
-      email: string;
       auth_token: string;
       auth_token_valid_to: string;
     } = JSON.parse(localStorage.getItem('userData'));
@@ -63,7 +62,6 @@ export class AuthService {
     }
 
     const loadedUser = new User(
-      userData.email,
       userData.auth_token,
       new Date(userData.auth_token_valid_to)
     );
@@ -126,9 +124,9 @@ export class AuthService {
     auth_token: string,
     auth_token_valid_to: number
   ) {
-    const expiresIn = 1800000;
+    const expiresIn = 36000000;
     const expirationDate = new Date(new Date().getTime() + expiresIn);
-    const user = new User(email, auth_token, expirationDate);
+    const user = new User(auth_token, expirationDate);
     this.user.next(user);
     console.log(user);
     this.autoLogout(expiresIn);

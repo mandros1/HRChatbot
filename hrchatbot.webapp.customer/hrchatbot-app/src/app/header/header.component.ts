@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, Optional, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { UserEditDialogComponent } from '../chatbot-ui/user-page/dialog/edit-dialog/user-edit-dialog.component';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { User } from '../auth/user.model';
 @Component({
   selector: 'app-header',
@@ -16,9 +16,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     public dialog: MatDialog,
-    @Optional() public dialogRef: MatDialogRef<UserEditDialogComponent>
   ) {}
 
   ngOnInit() {

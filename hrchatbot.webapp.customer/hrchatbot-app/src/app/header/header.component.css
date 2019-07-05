@@ -1,11 +1,98 @@
-.navbar navbar-default navbar {
-    color: blue;
+body {
+    padding-top: 102px;
+    background-color: #4d4d4d;
 }
 
-.hidden_navbar {
-  display: none;
+.container {
+    width: 1530px;
+    margin: 0 auto;
+    margin-top: 0;
 }
 
-.shown_navbar {
-  display: block;
+@media(max-width: 767px) {
+    .container {
+        width: auto;
+    }
+}
+
+.navbar-brand {
+    font-size: 50px;
+    padding-top: 40px;
+}
+
+.custom-nav {
+    min-height: 90px;
+    font-size: 16px;
+    color: #000 !important;
+    background-color: #fff;
+}
+
+.dropdown-menu.user-list {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    border: 0;
+    background-color: #F8F8F8;
+    font-size: 15px;
+}
+
+ul.user-list li a {
+    padding: 8px 30px;
+}
+
+ul.user-list li.divider {
+    width: 200px;
+    margin: 0 auto;
+}
+
+.avatar-img {
+    padding: 0;
+}
+
+i.fa-angle-down {
+    font-size: 25px;
+    vertical-align: middle;
+    font-weight: lighter;
+}
+
+
+/* My styles */
+
+li.dropdown {
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.user {
+    margin-left: 50px;
+    margin-right: 20px;
+}
+
+.label {
+    border-radius: 100px;
+    position: absolute;
+    top: 25px;
+    right: 2px;
+    background-color: #ff5500;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #777;
+    padding: 30px 19px;
+}
+
+li.dropdown.bell {
+    margin-right: 40px;
+}
+
+.nav>li.dropdown.bell>a:hover,
+.nav>li.dropdown.bell>a:focus {
+    background-color: transparent;
+}
+
+#search-container {
+    width: 300px;
 }

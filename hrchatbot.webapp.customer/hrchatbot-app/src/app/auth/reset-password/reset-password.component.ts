@@ -14,7 +14,7 @@ import { SuccessDialogComponent } from 'src/app/shared/dialogs/success-dialog/su
 })
 export class ResetPasswordComponent implements OnInit{
   passwordForm: FormGroup;
-  user: User;
+  private dialogConfig;
   matcher = new MyErrorStateMatcher();
 
   constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private repository: AuthService, public dialog: MatDialog) { }

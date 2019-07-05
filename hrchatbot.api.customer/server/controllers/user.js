@@ -504,6 +504,7 @@ class Users {
                         // returning only token and admin status
                         let data = {
                             auth_token: userData.get('auth_token'),
+                            auth_token_valid_to: userData.get('auth_token_valid_to'),
                             isAdmin: userData.get('isAdmin')
                         };
                         res.status(200).send({
