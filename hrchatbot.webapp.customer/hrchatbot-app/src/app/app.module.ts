@@ -29,6 +29,8 @@ import { EmailDialogComponent } from './chatbot-ui/user-page/dialog/email-dialog
 import { PasswordDialogComponent } from './chatbot-ui/user-page/dialog/password-dialog/password-dialog.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { AnalyticsComponent } from './chatbot-ui/analytics/analytics.component';
+import {MatTabsModule} from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     EmailDialogComponent,
     PasswordDialogComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    AnalyticsComponent
 
   ],
   imports: [
@@ -61,7 +64,8 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     HttpClientModule,
     AppRoutingModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatTabsModule
   ],
   providers: [
     RepositoryService,

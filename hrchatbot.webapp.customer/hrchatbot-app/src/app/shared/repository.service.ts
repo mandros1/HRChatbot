@@ -29,6 +29,87 @@ export class RepositoryService {
     });
   }
 
+public getDailyCounts() {
+  return new Promise(resolve => {
+    this.http.get(this.API + '/dailyCount')
+      .subscribe(res => {
+        resolve(res);
+      });
+  });
+}
+
+public getAllIntents() {
+  return new Promise(resolve => {
+    this.http.get<User>(this.API + '/intents')
+      .subscribe(res => {
+        resolve(res);
+      });
+  });
+}
+
+public getIntentCounts() {
+  return new Promise(resolve => {
+    this.http.get<User>(this.API + '/intentCount')
+      .subscribe(res => {
+        resolve(res);
+      });
+  });
+}
+
+public getIntentList() {
+  return new Promise(resolve => {
+    this.http.get<User>(this.API + '/intentList')
+      .subscribe(res => {
+        resolve(res);
+      });
+  });
+}
+
+  public getIntentByName(intent) {
+    return new Promise(resolve => {
+      this.http.get<User>(this.API + '/intents/' + intent)
+        .subscribe(res => {
+          resolve(res);
+        });
+    });
+  }
+
+  public getAllEntities() {
+    return new Promise(resolve => {
+      this.http.get<User>(this.API + '/entities')
+        .subscribe(res => {
+          resolve(res);
+        });
+    });
+  }
+
+  public getEntityCounts() {
+    return new Promise(resolve => {
+      this.http.get<User>(this.API + '/entityCount')
+        .subscribe(res => {
+          resolve(res);
+        });
+    });
+  }
+
+  public getEntityList() {
+    return new Promise(resolve => {
+      this.http.get<User>(this.API + '/entityList')
+        .subscribe(res => {
+          resolve(res);
+        });
+    });
+  }
+
+  public getEntityByName(entity) {
+    return new Promise(resolve => {
+      this.http.get<User>(this.API + '/entities/' + entity)
+        .subscribe(res => {
+          resolve(res);
+        });
+    });
+  }
+
   public login(body): Observable<any>{
     return this.http.put(this.API + '/login', body, this.generateHeaders());
   }

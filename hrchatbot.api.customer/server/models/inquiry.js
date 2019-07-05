@@ -99,14 +99,6 @@ export default (sequelize, DataTypes) => {
       }
     },
 
-    // answer: {
-    //   type: DataTypes.STRING,
-    //   allowNull: {
-    //     args: false,
-    //     msg: 'Please provide chatbot answer'
-    //   }
-    // },
-    //
     userId: {
       type: DataTypes.INTEGER,
       unique: true,
@@ -115,14 +107,14 @@ export default (sequelize, DataTypes) => {
         msg: 'Please provide id of the user that asked the question'
       }
     },
-    //
-    // confidence: {
-    //   type: DataTypes.FLOAT,
-    //   allowNull: {
-    //     args: false,
-    //     msg: 'Please provide confidence of the chatbot for the given answer'
-    //   }
-    // }
+
+    dateOfCreation: {
+      type: DataTypes.STRING,
+      allowNull: {
+        args: false,
+        msg: 'Date of creation must exist'
+      }
+    },
 
   }, {
     timestamps: true,

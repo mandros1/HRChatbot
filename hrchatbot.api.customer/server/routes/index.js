@@ -46,8 +46,17 @@ export default (app) => {
     app.get(`${baseUrl}/:userId/queries`, Queries.getUserQueries); // return all the queries that belong to the user with userId
     app.get(`${baseUrl}/queries/:queryId`, Queries.getQueryById); // return the query by specified queryId
 
-
+    // FOR THE ANALYTICS PART
+    app.get(`${baseUrl}/entities`, Queries.getAllEntities);
     app.get(`${baseUrl}/entityCount`, Queries.getAllEntitiesCount);
-    app.get(`${baseUrl}/entities`, Queries.getAllEntities)
+    app.get(`${baseUrl}/entityList`, Queries.getEntityList);
+    app.get(`${baseUrl}/entities/:entity`, Queries.getEntitiesByName);
+
+    app.get(`${baseUrl}/intents`, Queries.getAllIntents);
+    app.get(`${baseUrl}/intentCount`, Queries.getAllIntentCount);
+    app.get(`${baseUrl}/intentList`, Queries.getIntentList);
+    app.get(`${baseUrl}/intents/:intent`, Queries.getIntentsByName);
+
+    app.get(`${baseUrl}/dailyCount`, Queries.getDailyCount); // questions asked per day
 
 };

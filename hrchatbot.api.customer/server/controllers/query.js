@@ -45,7 +45,7 @@ async function getAnswerFromWatson(req, res, question, context, id) {
             firstEntityValue = d.output.entities[0].value;
             firstEntityConfidence = d.output.entities[0].confidence;
         }
-
+        let doc = generateIntegerDateFormat(new Date());
         // return
         Inquiry
             .create({
@@ -57,6 +57,7 @@ async function getAnswerFromWatson(req, res, question, context, id) {
                 value: firstEntityValue,
                 entityConfidence: parseFloat(firstEntityConfidence),
                 jsonPayload: JSON.stringify(d),
+                dateOfCreation: doc,
                 userId: id
             })
         // .then(query => res.status(201).send({
@@ -77,6 +78,15 @@ async function getAnswerFromWatson(req, res, question, context, id) {
         success: true,
         message: myObject
     });
+}
+
+function generateIntegerDateFormat (date) {
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const dateDay = ("0" + date.getDate()).slice(-2);
+    const hours = ("0" + date.getHours()).slice(-2);
+    const minutes = ("0" + date.getMinutes()).slice(-2);
+    return parseInt(year+month+dateDay+hours+minutes);
 }
 
 function getSessionIdFromWatson(req, res) {
@@ -200,6 +210,204 @@ class Inquiries {
     //         }))
     // }
 
+    static getAllIntents(req, res) {
+        return Inquiry
+            .findAll({
+                where: {
+                    intent: {
+                        [Op.notLike]: ""
+                    }
+                },
+                attributes: [
+                    'id',
+                    'question',
+                    'intent',
+                    'intentConfidence',
+                    'entity',
+                    'location',
+                    'value',
+                    'entityConfidence'
+                ],
+                group: ['intent', 'id']
+            })
+            .then(queries => {
+                // if there are no queries in the database error is returned along with
+                // 404 - resource not found code
+                if(queries != null && queries.length > 0) res.status(200).send({
+                    success: true,
+                    message: 'Queries fetched',
+                    queries
+                });
+                else res.status(404).send({
+                    success: false,
+                    message: 'There are no queries in the database'
+                });
+            });
+    }
+
+    static getIntentList(req, res) {
+        return Inquiry
+            .findAll({
+                where: {
+                    intent: {
+                        [Op.notLike]: ""
+                    }
+                },
+                attributes: [
+                    [Sequelize.fn('DISTINCT', Sequelize.col('intent')) ,'intent']
+                ],
+                group: ['intent', 'id']
+            })
+            .then(queries => {
+                // if there are no queries in the database error is returned along with
+                // 404 - resource not found code
+                if(queries != null && queries.length > 0) res.status(200).send({
+                    success: true,
+                    message: 'Queries fetched',
+                    queries
+                });
+                else res.status(404).send({
+                    success: false,
+                    message: 'There are no queries in the database'
+                });
+            });
+    }
+
+    static getEntityList(req, res) {
+        return Inquiry
+            .findAll({
+                where: {
+                    entity: {
+                        [Op.notLike]: ""
+                    }
+                },
+                attributes: [
+                    [Sequelize.fn('DISTINCT', Sequelize.col('entity')) ,'entity']
+                ],
+                group: ['entity', 'id']
+            })
+            .then(queries => {
+                // if there are no queries in the database error is returned along with
+                // 404 - resource not found code
+                if(queries != null && queries.length > 0) res.status(200).send({
+                    success: true,
+                    message: 'Queries fetched',
+                    queries
+                });
+                else res.status(404).send({
+                    success: false,
+                    message: 'There are no queries in the database'
+                });
+            });
+    }
+
+    static getAllIntentCount(req, res) {
+        return Inquiry
+            .findAll({
+                where: {
+                    intent: {
+                        [Op.notLike]: ""
+                    }
+                },
+                attributes: [
+                    [Sequelize.fn('COUNT', Sequelize.col('intent')), 'count'],
+                    'intent'
+                ],
+                group: ['intent']
+            })
+            .then(queries => {
+                // if there are no queries in the database error is returned along with
+                // 404 - resource not found code
+                if(queries != null && queries.length > 0) res.status(200).send({
+                    success: true,
+                    message: 'Queries fetched',
+                    queries
+                });
+                else res.status(404).send({
+                    success: false,
+                    message: 'There are no queries in the database'
+                });
+            });
+    }
+
+    //TODO possibly change to only when there is intent or entity returned
+    static getDailyCount(req, res) {
+        return Inquiry
+            .findAll({
+                // where: {
+                //     intent: {
+                //         [Op.notLike]: ""
+                //     }
+                // },
+                attributes: [
+                    [Sequelize.fn('COUNT', Sequelize.col('intent')), 'count'],
+                    [Sequelize.fn('LEFT', Sequelize.col('dateOfCreation'), 8), 'doc']
+                ],
+                order: [
+                    [Sequelize.fn('COUNT', Sequelize.col('intent')), 'DESC']
+                ],
+                group: ['doc']
+            })
+            .then(queries => {
+                // if there are no queries in the database error is returned along with
+                // 404 - resource not found code
+                if(queries != null && queries.length > 0) {
+                    res.status(200).send({
+                        success: true,
+                        message: 'Queries fetched',
+                        queries
+                    });
+                } else {
+                    res.status(404).send({
+                        success: false,
+                        message: 'There are no queries in the database'
+                    });
+                }
+            });
+    }
+
+    static getEntitiesByName(req, res) {
+        const { entity } = req.params;
+        return Inquiry
+            .findAll({
+                where: {
+                    entity: entity
+                }
+            })
+            .then(queries => {
+                if(queries != null && queries.length > 0) res.status(200).send({
+                    success: true,
+                    message: 'Queries fetched',
+                    queries
+                });
+                else res.status(404).send({
+                    success: false,
+                    message: 'There are no queries in the database by that entity name'
+                });
+            })
+    }
+
+    static getIntentsByName(req, res) {
+        const { intent } = req.params;
+        return Inquiry
+            .findAll({
+                where: {
+                    intent: intent
+                }
+            })
+            .then(queries => {
+                    if(queries != null && queries.length > 0) res.status(200).send({
+                        success: true,
+                        message: 'Queries fetched',
+                        queries
+                    });
+                    else res.status(404).send({
+                        success: false,
+                        message: 'There are no queries in the database by that intent name'
+                    });
+                }
+            )
+    }
 
     static getAllEntities(req, res) {
         return Inquiry

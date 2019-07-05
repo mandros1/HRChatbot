@@ -4,6 +4,15 @@
     <div class="container-fluid">
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
+              <li *ngIf="authService.isAdmin == false && authService.isAuthenticated">
+                <a style="cursor: pointer;" (click)="goToChat()">Chat</a>
+              </li>
+              <li *ngIf="authService.isAdmin == true && authService.isAuthenticated">
+                <a style="cursor: pointer;" (click)="goToManageUsers()">Manage users</a>
+              </li>
+              <li *ngIf="authService.isAdmin == true && authService.isAuthenticated">
+                <a style="cursor: pointer;" (click)="goToAnalytics()">Analytics</a>
+              </li>
                 <li *ngIf="authService.isAuthenticated">
                     <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
                 </li>

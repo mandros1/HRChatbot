@@ -36,16 +36,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.FLOAT
       },
+      dateOfCreation: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       jsonPayload: {
         allowNull: false,
         type: Sequelize.STRING(2048)
       },
-      // answer: {
-      //   type: Sequelize.STRING
-      // },
-      // confidence: {
-      //   type: Sequelize.FLOAT
-      // },
       userId: {
         type: Sequelize.INTEGER
       },

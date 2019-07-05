@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import {RepositoryService} from "../shared/repository.service";
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit{
+export class AuthComponent implements OnInit, OnChanges{
   isLoading = false;
   error: string = null;
 
@@ -39,6 +39,26 @@ export class AuthComponent implements OnInit{
           this.router.navigate(['/admin-page']);
         } else {
           console.log("NOT ADMIN");
+          this.router.navigate(['/user-page']);
+        }
+      }
+    }
+  }
+
+
+  async ngOnChanges(changes: SimpleChanges) {
+    const data = JSON.parse(localStorage.getItem('userData'));
+    if (data !== null && data !== undefined && data !== '') {
+      const body = {
+        auth_token: data['auth_token'],
+        auth_token_valid_to: data['auth_token_valid_to']
+      };
+
+      let object = await this.repo.isLoggedIn(body);
+      if (object['success']) {
+        if (object['isAdmin']) {
+          this.router.navigate(['/admin-page']);
+        } else {
           this.router.navigate(['/user-page']);
         }
       }
@@ -90,5 +110,6 @@ export class AuthComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+
 
 }

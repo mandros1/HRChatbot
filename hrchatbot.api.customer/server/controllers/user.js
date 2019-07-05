@@ -282,7 +282,6 @@ class Users {
             });
     }
 
-
     static generateUserResetLink(req, res) {
         const { email } = req.body;
         User.findOne({

@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { UserEditDialogComponent } from '../chatbot-ui/user-page/dialog/edit-dialog/user-edit-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { User } from '../auth/user.model';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -18,10 +19,12 @@ export class HeaderComponent implements OnInit, OnDestroy{
   constructor(
     private authService: AuthService,
     public dialog: MatDialog,
+    private router: Router,
     @Optional() public dialogRef: MatDialogRef<UserEditDialogComponent>
   ) {}
 
   ngOnInit() {
+    console.log(`IS ADMIN: ${this.authService.isAdmin}`);
     this.authService.isUserLoggedIn()
       .then(res => {
         this.isAuthenticated = res;
@@ -32,6 +35,18 @@ export class HeaderComponent implements OnInit, OnDestroy{
     // this.isAuthenticated = false;
     this.authService.logout();
     this.isAuthenticated = false;
+  }
+
+  goToChat() {
+    this.router.navigate(['/user-page']);
+  }
+
+  goToManageUsers() {
+    this.router.navigate(['/admin-page']);
+  }
+
+  goToAnalytics() {
+    this.router.navigate(['/analytics']);
   }
 
   editDialog(user) {

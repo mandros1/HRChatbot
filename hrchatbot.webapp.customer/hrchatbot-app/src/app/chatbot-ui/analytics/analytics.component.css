@@ -1,0 +1,16 @@
+.mat-tab-group-analytics{
+  background-color: #F8F8F8;
+  height: 85vh;
+  width: 100%;
+  padding: 10px;
+}
+
+.row{
+  width: 90vw;
+  margin-left: 5vw;
+}
+
+.container {
+  width: 100vw;
+  margin: 0;
+}

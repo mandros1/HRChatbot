@@ -34,6 +34,7 @@ export class AuthService {
   private tokenExpirationTimer: any;
   private readonly API = 'http://localhost:3000/api/v1';
   public isAuthenticated;
+  public isAdmin;
 
   constructor(private http: HttpClient, private router: Router, private repo: RepositoryService) {}
 
@@ -140,8 +141,11 @@ export class AuthService {
 
       let object = await this.repo.isLoggedIn(body);
 
-      if(object['success']) this.isAuthenticated = true;
+      if (object['success']) this.isAuthenticated = true;
       else                  this.isAuthenticated = false;
+
+      if (object['isAdmin']) this.isAdmin = true;
+      else                  this.isAdmin = false;
 
       return object['success']
     }
@@ -158,6 +162,7 @@ export class AuthService {
     }
     this.tokenExpirationTimer = null;
     this.isAuthenticated = false;
+    this.isAdmin = false;
   }
 
   autoLogout(expirationDuration: number) {
@@ -165,6 +170,7 @@ export class AuthService {
       this.logout();
     }, expirationDuration);
     this.isAuthenticated = false;
+    this.isAdmin = false;
   }
 
   private handleAuthentication(
@@ -183,7 +189,11 @@ export class AuthService {
       auth_token: auth_token,
       auth_token_valid_to: auth_token_valid_to
     };
+
     this.isAuthenticated = true;
+    this.isAdmin = isAdmin;
+
+    console.log(`Handle auth ${this.isAuthenticated} and admin: ${this.isAdmin}`);
     localStorage.setItem('userData', JSON.stringify(jsonData));
   }
 
