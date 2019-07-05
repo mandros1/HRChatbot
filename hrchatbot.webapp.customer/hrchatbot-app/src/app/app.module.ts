@@ -30,7 +30,7 @@ import { PasswordDialogComponent } from './chatbot-ui/user-page/dialog/password-
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { AnalyticsComponent } from './chatbot-ui/analytics/analytics.component';
-import {MatTabsModule} from "@angular/material";
+import {MatTabsModule, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material";
 
 @NgModule({
   declarations: [

@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
   private userSub: Subscription;
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     public dialog: MatDialog,
     private router: Router,
     @Optional() public dialogRef: MatDialogRef<UserEditDialogComponent>

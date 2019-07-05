@@ -42,7 +42,7 @@ export class AddUserComponent implements OnInit {
       name: new FormControl('', [Validators.required, Validators.maxLength(60)]),
       email: new FormControl('', [Validators.required, Validators.email]),
 // tslint:disable-next-line: max-line-length
-      password: new FormControl('', [Validators.required, Validators.pattern('^(?=[^a-z]*[a-z])(?=\\D*\\d)[A-Za-z\\d!$%@#£€*?&]{8,}$')]),
+      // password: new FormControl('', [Validators.required, Validators.pattern('^(?=[^a-z]*[a-z])(?=\\D*\\d)[A-Za-z\\d!$%@#£€*?&]{8,}$')]),
       isAdmin: new FormControl(false)
     });
 
@@ -60,7 +60,6 @@ export class AddUserComponent implements OnInit {
     let user: UserForCreation = {
       name: userFormValue.name,
       email: userFormValue.email,
-      password: userFormValue.password,
       isAdmin: userFormValue.isAdmin
     }
     if (this.userForm.valid) {

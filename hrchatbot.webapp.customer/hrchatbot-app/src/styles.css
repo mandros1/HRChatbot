@@ -1,19 +1,27 @@
 @import url('https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css');
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+/* body {
+    font-family: Helvetica Neue for IBM, Helvetica Neue, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    background-image: url('./app/chatbot-ui/user-page/img/robot_1.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    height: 0;
+    padding-bottom: 56.25%;
+} */
+
 body {
-  font-family: Helvetica Neue for IBM, Helvetica Neue, Helvetica, Arial, sans-serif;
-  margin: 0;
-  /*padding: 0;*/
-  position: relative;
-  overflow: hidden;
-  background-image: url('./app/chatbot-ui/user-page/img/robot_1.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  height: 0;
-  padding-bottom: 56.25%;
+    background: url(./app/chatbot-ui/user-page/img/robot_1.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }

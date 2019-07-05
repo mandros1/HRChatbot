@@ -189,6 +189,7 @@ div {
 
 .container {
     width: 90vw;
+    overflow: auto;
 }
 
 #contentParent {
@@ -243,7 +244,7 @@ div {
 
 .chat-column {
     width: 90vw;
-    height: 90vh;
+    height: 80vh;
     /*padding: 0.9375rem 0 0.625rem 0;*/
     /*margin: auto;*/
     text-align: left;
@@ -260,10 +261,10 @@ div {
 }
 
 #scrollingChat {
-    /*margin: 20vw 0.75rem 0.75rem -11.75rem ;*/
+    /* margin: 20vw 0.75rem 0.75rem -11.75rem; */
     overflow: scroll;
     overflow-y: scroll;
-    overflow-x: hidden;
+    overflow-x: scroll;
     /*height: calc(90% - 8rem);*/
     border: 5px solid #a7afb2;
     border-radius: 1pc;
@@ -272,7 +273,8 @@ div {
     z-index: 0;
     width: 70vw;
     margin-left: 10vw;
-    height: 75vh;
+    margin-top: 4rem;
+    height: 65vh;
     -ms-overflow-style: none;
     /* hide scrollbar --> IE 11 */
     scrollbar-width: none;
@@ -562,21 +564,195 @@ html {
         font-size: 15px;
     }
     #scrollingChat {
-        width: 30rem;
-        margin: 8rem 0.75rem 0.75rem -2.25rem;
+        width: 34rem;
+        margin-top: 4rem;
+        /* margin: 8rem 0.75rem 0.75rem -2.25rem; */
     }
 }
 
 @media only screen and (max-width: 600px) {
     html {
-        font-size: 14px;
+        font-size: 12px;
     }
     .chat-column {
-        padding-top: 4rem;
+        padding-top: 3rem;
     }
     #scrollingChat {
-        margin: 8rem 0.75rem 0.75rem 2.25rem;
-        width: 20rem;
+        /* margin: 8rem 0.75rem 0.75rem 2.25rem; */
+        width: 25rem;
+        margin-top: 1rem;
+    }
+    .watsonDivContainer {
+        float: left;
+        width: 90%;
+        margin-left: 5%;
+    }
+    .watsonBox.latest.top.watsonBubble {
+        width: 100%;
+        margin-left: 5%;
+    }
+    .messageContainer {
+        width: 240px;
+        margin: auto;
+        margin-bottom: 40px;
+    }
+    .userMessageContainer {
+        float: right;
+        width: 50%;
+        margin-right: 5%;
+    }
+    .userDivContainer {
+        float: left;
+        width: 90%;
+        margin-left: 5%;
+    }
+    .userBox.latest.top.userBubble {
+        width: 100%;
+        margin-left: 5%;
+    }
+    .watsonMessageContainer {
+        float: left;
+        width: 50%;
+        margin-left: 5%;
+    }
+    .userLogo {
+        width: 55px;
+        float: right;
+    }
+    .userLogo i {
+        font-size: 40px;
+    }
+    .watsonLogo {
+        float: left;
+        width: 25px;
+    }
+    .watsonLogo i {
+        font-size: 20px;
+    }
+    .userBox {
+        /*float:right;*/
+        width: 300px;
+        margin-top: 20px;
+        border-radius: 15px;
+        background: #43bf96;
+        color: #fff;
+        padding: 20px;
+        text-align: right;
+        font-weight: 900;
+        font-family: arial;
+        position: relative;
+    }
+    .userMessage {
+        float: right;
+    }
+    .userBox p {
+        font-weight: normal;
+    }
+    .watsonBox {
+        /*float:left;*/
+        width: 300px;
+        margin-top: 20px;
+        border-radius: 15px;
+        background: #d64c60;
+        color: #fff;
+        padding: 20px;
+        text-align: left;
+        font-weight: 900;
+        font-family: arial;
+        position: relative;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    html {
+        font-size: 10px;
+    }
+    .chat-column {
+        padding-top: 3rem;
+    }
+    #scrollingChat {
+        /* margin: 8rem 0.75rem 0.75rem 2.25rem; */
+        margin-top: 1rem;
+        width: 24rem;
+    }
+    .watsonDivContainer {
+        float: left;
+        width: 90%;
+        margin-left: 5%;
+    }
+    .watsonBox.latest.top.watsonBubble {
+        width: 100%;
+        margin-left: 5%;
+    }
+    .messageContainer {
+        width: 240px;
+        margin: auto;
+        margin-bottom: 40px;
+    }
+    .userMessageContainer {
+        float: right;
+        width: 50%;
+        margin-right: 5%;
+    }
+    .userDivContainer {
+        float: left;
+        width: 90%;
+        margin-left: 5%;
+    }
+    .userBox.latest.top.userBubble {
+        width: 100%;
+        margin-left: 5%;
+    }
+    .watsonMessageContainer {
+        float: left;
+        width: 50%;
+        margin-left: 5%;
+    }
+    .userLogo {
+        width: 55px;
+        float: right;
+    }
+    .userLogo i {
+        font-size: 40px;
+    }
+    .watsonLogo {
+        float: left;
+        width: 25px;
+    }
+    .watsonLogo i {
+        font-size: 12px;
+    }
+    .userBox {
+        /*float:right;*/
+        width: 300px;
+        margin-top: 20px;
+        border-radius: 15px;
+        background: #43bf96;
+        color: #fff;
+        padding: 20px;
+        text-align: right;
+        font-weight: 900;
+        font-family: arial;
+        position: relative;
+    }
+    .userMessage {
+        float: right;
+    }
+    .userBox p {
+        font-weight: normal;
+    }
+    .watsonBox {
+        /*float:left;*/
+        width: 200px;
+        margin-top: 15px;
+        border-radius: 15px;
+        background: #d64c60;
+        color: #fff;
+        padding: 20px;
+        text-align: left;
+        font-weight: 900;
+        font-family: arial;
+        position: relative;
     }
 }
 
@@ -746,4 +922,8 @@ input[type="text"]::-ms-input-placeholder {
 input[type="text"] {
     border-bottom: none;
     outline: none;
+}
+
+* {
+    box-sizing: border-box;
 }
