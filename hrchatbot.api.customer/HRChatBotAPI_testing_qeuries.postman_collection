@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7f360f2c-6ca1-4005-aef0-a679031e62c7",
+		"_postman_id": "c36ad2d4-e551-44f0-ab49-e50c6dbcd112",
 		"name": "HRChatBotAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -78,12 +78,12 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Djuka",
+									"value": "Marin",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "lry13153@onqus.com",
+									"value": "marinandros031@gmail.com",
 									"type": "text"
 								},
 								{
@@ -94,7 +94,7 @@
 								},
 								{
 									"key": "isAdmin",
-									"value": "true",
+									"value": "false",
 									"type": "text"
 								}
 							]
@@ -134,12 +134,12 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "lry13153@onqus.com",
+									"value": "marinandros031@gmail.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "gdasgads231",
+									"value": "marinandros333",
 									"type": "text"
 								}
 							]
@@ -179,12 +179,12 @@
 							"urlencoded": [
 								{
 									"key": "auth_token",
-									"value": "0745994f44339a9e94368a2efbf9848925b897ec21495885f677ece8f2932355c123891de320757d7d569969b9ae3530b03b95df1c7eac3c1b0b3ca03094f0fb",
+									"value": "7a7b1e31049da0f07a1706759ebe22380361e3585afd150ec4b2661181640e77f8baa2ee5208df56cd00be5bfba5201c92849e07dec840cbcc01e6842c778c3e",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "gdasgads231",
+									"value": "marinandros33",
 									"type": "text"
 								}
 							]
@@ -292,6 +292,101 @@
 								"api",
 								"v1",
 								"isAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LINK PASSWORD RESET",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "password",
+									"value": "marinandros33",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/reset/:userHash",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"reset",
+								":userHash"
+							],
+							"variable": [
+								{
+									"key": "userHash",
+									"value": "69c9bf962c06387ac8266a77cc410174b03b01814409c13370f9cec9b906b90f886f09fc545f921c4c828c9932913e071fba6d5d459afaccc5103a31c062755a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IS LOGGED IN",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "auth_token",
+									"value": "5d970b5f44c517d50077a866e441bd2c0d103883f89d84eea4b420646a7b3fd8c3a0993272bef60367dd99e419f9e1f0d6ea7f7f3edcc7507c315f5c2904f7e8",
+									"type": "text"
+								},
+								{
+									"key": "auth_token_valid_to",
+									"value": "201908031512",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/isLoggedIn",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"isLoggedIn"
 							]
 						}
 					},
@@ -461,8 +556,94 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GET SESSION",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/session",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"session"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "SEND QUESTION",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "question",
+							"value": "zelim",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:3000/api/v1/question",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"question"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GENERATE SESSION",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:3000/api/v1/session",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"session"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

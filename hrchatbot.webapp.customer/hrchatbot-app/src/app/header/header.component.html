@@ -1,4 +1,5 @@
-<nav [ngClass]="authService.isLoggedIn() == true ? 'shown_navbar navbar navbar-default navbar' : 'hidden_navbar' ">
+<!--<nav class="navbar navbar-default navbar">-->
+<nav [ngClass]="authService.isAuthenticated == true ? 'shown_navbar navbar navbar-default navbar' : 'hidden_navbar' ">
     <!--<nav *ngIsf="authService.isLoggedIn() === false" style="display: none;" class="navbar navbar-default navbar">-->
     <div class="container-fluid">
         <div class="navbar-header">
@@ -11,10 +12,10 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li *ngIf="isAuthenticated">
+                <li *ngIf="authService.isAuthenticated">
                     <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
                 </li>
-                <li class="dropdown" appDropdown *ngIf="isAuthenticated">
+                <li class="dropdown" appDropdown *ngIf="authService.isAuthenticated">
                     <a style="cursor: pointer;" class="dropdown-toggle" role="button">Settings <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>

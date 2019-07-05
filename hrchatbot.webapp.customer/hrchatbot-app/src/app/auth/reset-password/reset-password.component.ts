@@ -13,6 +13,7 @@ import { SuccessDialogComponent } from 'src/app/shared/dialogs/success-dialog/su
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit{
+  private dialogConfig;
   passwordForm: FormGroup;
   private dialogConfig;
   matcher = new MyErrorStateMatcher();
@@ -31,8 +32,7 @@ export class ResetPasswordComponent implements OnInit{
   applyEdit = (passwordFormValue) => {
     let reset: any = {
       password: passwordFormValue.confirmPassword,
-      // auth_token: JSON.parse(localStorage.getItem('userData')).auth_token,
-    }
+    };
     if (this.passwordForm.valid) {
 // tslint:disable-next-line: max-line-length
         const param = this.route.snapshot.params;

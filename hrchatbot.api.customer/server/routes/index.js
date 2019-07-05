@@ -25,6 +25,8 @@ export default (app) => {
     app.get(`${baseUrl}/users`, Users.getAllUsers); // get all users
     app.get(`${baseUrl}/users/:userId`, Users.getUser); // get user by ID
     app.get(`${baseUrl}/isAdmin`, Users.isAdministrator); // get user admin status
+    app.post(`${baseUrl}/isLoggedIn`, Users.isLoggedIn);
+
 
     // User Question
     app.post(`${baseUrl}/question`, Queries.askedQuestion);
@@ -33,7 +35,7 @@ export default (app) => {
 
     // QUERIES routes
     // INSERT
-    app.post(`${baseUrl}/:userId/queries`, Queries.create); // creating a query object
+    // app.post(`${baseUrl}/:userId/queries`, Queries.create); // creating a query object
     // DELETE
     // TODO: remove this if we don't wanna allow query deletions
     app.delete(`${baseUrl}/:queryId/queries`, Queries.removeQuery); // remove query object
@@ -43,4 +45,9 @@ export default (app) => {
     app.get(`${baseUrl}/queries`, Queries.getAllQueries); // return all the queries in the database
     app.get(`${baseUrl}/:userId/queries`, Queries.getUserQueries); // return all the queries that belong to the user with userId
     app.get(`${baseUrl}/queries/:queryId`, Queries.getQueryById); // return the query by specified queryId
+
+
+    app.get(`${baseUrl}/entityCount`, Queries.getAllEntitiesCount);
+    app.get(`${baseUrl}/entities`, Queries.getAllEntities)
+
 };

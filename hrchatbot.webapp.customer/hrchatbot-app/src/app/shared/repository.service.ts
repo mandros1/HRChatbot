@@ -20,6 +20,19 @@ export class RepositoryService {
     return this.http.get<User>(this.API2 + '/' + id);
   }
 
+  public isLoggedIn(body) {
+    return new Promise(resolve => {
+      this.http.post(this.API + "/isLoggedIn", body, this.generateHeaders())
+        .subscribe(res => {
+            resolve(res);
+        });
+    });
+  }
+
+  public login(body): Observable<any>{
+    return this.http.put(this.API + '/login', body, this.generateHeaders());
+  }
+
   public create(body): Observable<User> {
     return this.http.post<User>(this.API + '/register', body, this.generateHeaders());
   }
